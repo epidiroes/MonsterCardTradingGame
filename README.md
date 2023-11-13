@@ -1,4 +1,4 @@
-# MonsterCardTradingGame
+# MonsterCardTradingGame aka Monster Trading Card Game
 
 ## Notizen 13.11.2023
 
@@ -8,5 +8,5 @@ client-server overview mdn web docs
 das dann in eine objekt orientierte java klasse umzuwandeln ist aufgabe des mappers - das geht dann wieder an den handler zurück
 dieses request objekt wird dann an die app weitergegeben
 
-implementierung des mappers heute
+implementierung des mappers heute?
 
