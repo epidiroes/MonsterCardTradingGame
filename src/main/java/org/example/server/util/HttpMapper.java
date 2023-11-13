@@ -7,6 +7,11 @@ public class HttpMapper {
 
     public static Request toRequestObject(String request) {
         // TODO
+        // (A-Z)+\s/\S+)\sHTTP
+        // Host:\s(.)+
+        //System.out.println(request.split(" ")[0]);
+
+
         return new Request();
     }
 
