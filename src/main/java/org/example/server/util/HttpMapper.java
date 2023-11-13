@@ -7,12 +7,11 @@ public class HttpMapper {
 
     public static Request toRequestObject(String request) {
         // TODO
-        return null;
+        return new Request();
     }
 
     public static String toResponseString(Response response) {
         // TODO
         return null;
     }
-
 }
