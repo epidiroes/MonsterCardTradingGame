@@ -23,6 +23,15 @@ public class HttpMapper {
 
     public static String toResponseString(Response response) {
         // TODO
+        /*
+         out.write(
+                "HTTP/1.1 200 OK\r\n" +
+                "Content-Type: text/html\r\n" +
+                "Content-Length: 5\r\n" +
+                "\r\n" +
+                "Hallo");
+         */
+
         return null;
     }
 
