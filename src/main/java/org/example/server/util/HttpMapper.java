@@ -22,22 +22,19 @@ public class HttpMapper {
     }
 
     public static String toResponseString(Response response) {
-        // TODO
-        /*
-         out.write(
-                "HTTP/1.1 200 OK\r\n" +
-                "Content-Type: text/html\r\n" +
-                "Content-Length: 5\r\n" +
-                "\r\n" +
-                "Hallo");
-         */
 
-        return null;
+        return "HTTP/1.1 " + response.getStatusCode() + " " + response.getStatusMessage() + "\r\n" +
+                "Content-Type: " + response.getContentType() + "\r\n" +
+                "Content-Length: " + response.getBody().length() + "\r\n" +
+                "\r\n" +
+                response.getBody();
     }
 
+    // THOUGHT: Maybe some better place for this logic?
     public static HttpMethod getHttpMethod(String httpRequest) {
         String httpMethod = httpRequest.split(" ")[0];
 
+        // THOUGHT: Use constants instead of hardcoded strings
         return switch (httpMethod) {
             case "GET" -> HttpMethod.GET;
             case "POST" -> HttpMethod.POST;
