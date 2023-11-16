@@ -27,7 +27,7 @@ public class Response {
         return contentType;
     }
 
-    public void setContentType(ContentType httpContentType) {
+    public void setContentType(HttpContentType httpContentType) {
         this.contentType = httpContentType.getMimeType();
     }
 
