@@ -18,7 +18,22 @@ public class HttpMapper {
         request.setRoute(getRoute(httpRequest));
         request.setHost(getHttpHeader("Host", httpRequest));
 
-        return new Request();
+        // THOUGHT: don't do the content parsing in this method
+        String contentLengthHeader = getHttpHeader("Content-Length", httpRequest);
+        if (null == contentLengthHeader) {
+            return request;
+        }
+
+        int contentLength = Integer.parseInt(contentLengthHeader);
+        request.setContentLength(contentLength);
+
+        if (0 == contentLength) {
+            return request;
+        }
+
+        request.setBody(httpRequest.substring(httpRequest.length() - contentLength));
+
+        return request;
     }
 
     public static String toResponseString(Response response) {
