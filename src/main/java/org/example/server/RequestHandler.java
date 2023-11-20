@@ -12,6 +12,7 @@ import java.net.Socket;
 
 public class RequestHandler {
 
+
     private BufferedReader in;
     private PrintWriter out;
 
@@ -27,24 +28,19 @@ public class RequestHandler {
     public void handle() throws IOException {
         in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-        String httpRequest  = getHttpStringFromStream(in);
+        String httpRequest = getHttpStringFromStream(in);
 
-        Request req = HttpMapper.toRequestObject(httpRequest);
+        Request request = HttpMapper.toRequestObject(httpRequest);
+        Response response = app.handle(request);
 
         out = new PrintWriter(client.getOutputStream(), true);
-        out.write(
-                "HTTP/1.1 200 OK\r\n" +
-                        "Content-Type: text/html\r\n" +
-                        "Content-Length: 5\r\n" +
-                        "\r\n" +
-                        "Hallo");
+        out.write(HttpMapper.toResponseString(response));
 
         out.close();
         in.close();
         client.close();
     }
 
-    // socket reader selber implementieren zb
     private String getHttpStringFromStream(BufferedReader in) throws IOException {
         StringBuilder builder = new StringBuilder();
 
