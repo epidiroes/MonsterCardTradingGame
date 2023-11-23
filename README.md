@@ -14,7 +14,7 @@ implementierung des mappers heute?
 ## Notzien 16.11.2023
 
 user
-chard
+card
 stack
 deck
 coin
@@ -32,7 +32,7 @@ parallelitäten im battle - mehrere aufrufe gleichzeitig
 
 neus package erstellen
 mtcg unter apps mit MtcgApp class public Response handle(Request request) {}
-mit pachage controller (presentation layer) - controller arbeiten einzelne Routen ab zb UserController
+mit pachage controller (presentation layer) - controller arbeiten einzelne Routen ab zb UserController	
 mit package entity (eher data layer) - alles was wir auf die db mappen können zb class Card
 mit pack service (logic layer) - zb transactionService - für aufgaben tun zuständig
 mit pack repository (data layer) - kommuniziert mit der db für abfragen zb PachageRepository
