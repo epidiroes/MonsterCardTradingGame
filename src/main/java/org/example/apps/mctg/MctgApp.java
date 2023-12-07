@@ -1,5 +1,6 @@
 package org.example.apps.mctg;
 
+import org.example.apps.mctg.controller.SessionController;
 import org.example.apps.mctg.controller.UserController;
 import org.example.apps.mctg.controller.Controller;
 import org.example.server.ServerApplication;
@@ -18,6 +19,7 @@ public class MctgApp implements ServerApplication {
     public MctgApp() {
         this.controllers = new ArrayList<>();
         this.controllers.add(new UserController());
+        this.controllers.add(new SessionController());
     }
 
     @Override

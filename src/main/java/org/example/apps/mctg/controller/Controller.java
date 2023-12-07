@@ -6,6 +6,7 @@ import org.example.server.http.HttpContentType;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
+import org.example.apps.mctg.entity.User;
 
 public abstract class Controller {
 
@@ -23,11 +24,11 @@ public abstract class Controller {
     }
 
 
-    protected <T> T toObject(String requestBody, Class<T> targetClass) {
+    protected <T> T toObject(Request request, Class<T> targetClass) {
         ObjectMapper objectMapper = new ObjectMapper();
         T object = null;
         try {
-            object = objectMapper.readValue(requestBody, targetClass);
+            object = objectMapper.readValue(request.getBody(), targetClass);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

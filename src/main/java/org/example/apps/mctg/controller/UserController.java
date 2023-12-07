@@ -1,19 +1,20 @@
 package org.example.apps.mctg.controller;
 
+import org.example.apps.mctg.repository.UserRepository;
 import org.example.apps.mctg.service.UserService;
 import org.example.apps.mctg.entity.User;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
 
 public class UserController extends Controller {
 
     private final UserService userService;
 
     public UserController() {
-        this.userService = new UserService();
+        this.userService = new UserService(new UserRepository());
     }
 
     @Override
@@ -24,7 +25,7 @@ public class UserController extends Controller {
     @Override
     public Response handle(Request request) {
 
-        if (request.getRoute().equals("/tasks")) {
+        if (request.getRoute().equals("/users")) {
             switch (request.getMethod()) {
                 case "GET": return readAll(request);
                 case "POST": return create(request);
@@ -38,12 +39,13 @@ public class UserController extends Controller {
     }
 
     public Response readAll(Request request) {
-        return null;
+        List<User> users = userService.findAll();
+        return json(users);
     }
 
     public Response create(Request request) {
-        User user = toObject(request.getBody(), User.class);
-        //user = UserService.save(user);
+        User user = toObject(request, User.class);
+        user = userService.save(user);
         return json(user);
     }
 }
