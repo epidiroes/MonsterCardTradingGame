@@ -1,5 +1,6 @@
 package org.example.server.util;
 
+import org.example.server.http.HttpContentType;
 import org.example.server.http.HttpMethod;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
@@ -17,6 +18,7 @@ public class HttpMapper {
         request.setMethod(getHttpMethod(httpRequest));
         request.setRoute(getRoute(httpRequest));
         request.setHost(getHttpHeader("Host", httpRequest));
+        request.setContentType(getHttpContentType(getHttpHeader("Content-Type", httpRequest)));
 
         // THOUGHT: don't do the content parsing in this method
         String contentLengthHeader = getHttpHeader("Content-Length", httpRequest);
@@ -56,6 +58,18 @@ public class HttpMapper {
             case "PUT" -> HttpMethod.PUT;
             case "DELETE" -> HttpMethod.DELETE;
             default -> throw new RuntimeException("No HTTP Method");
+        };
+    }
+
+    private static HttpContentType getHttpContentType(String contentType) {
+        if (contentType == null) {
+            return null;
+        }
+        return switch (contentType) {
+            case "application/json" -> HttpContentType.APPLICATION_JSON;
+            case "text/html" -> HttpContentType.TEXT_HTML;
+            case "text/plain" -> HttpContentType.TEXT_PLAIN;
+            default -> throw new RuntimeException("contentType not supported");
         };
     }
 

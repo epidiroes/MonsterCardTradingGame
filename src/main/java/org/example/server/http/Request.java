@@ -47,8 +47,8 @@ public class Request {
         return contentType;
     }
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public void setContentType(HttpContentType contentType) {
+        this.contentType = contentType.getMimeType();
     }
 
     public int getContentLength() {

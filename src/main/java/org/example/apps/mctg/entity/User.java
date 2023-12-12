@@ -4,7 +4,6 @@ public class User {
     private String id;
     private String username;
     private String password;
-    private String token;
 
     public User() {}
 
@@ -12,7 +11,6 @@ public class User {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.token = null;
     }
 
     public String getId() {
@@ -39,11 +37,4 @@ public class User {
         this.password = password;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }
