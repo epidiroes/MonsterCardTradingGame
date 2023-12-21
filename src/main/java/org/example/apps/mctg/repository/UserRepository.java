@@ -34,8 +34,11 @@ public class UserRepository {
                 );
             }
 
-            assert user != null;
-            return Optional.of(user);
+            if (user != null) {
+                return Optional.of(user);
+            } else {
+                return Optional.empty();
+            }
         } catch (SQLException e) {
             System.err.print(e);
             return Optional.empty();
@@ -55,6 +58,7 @@ public class UserRepository {
                         rs.getString("username"),
                         rs.getString("password")
                 );
+
                 users.add(user);
             }
 
@@ -75,7 +79,7 @@ public class UserRepository {
 
             pstmt.execute();
         } catch (SQLException e) {
-            // dunno yet
+            // meh
         }
 
         return user;

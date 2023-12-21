@@ -35,17 +35,12 @@ public class SessionController extends Controller {
     private Response getToken(Request request) {
         TokenRequest tokenRequest = toObject(request, TokenRequest.class);
         Token token = sessionService.getToken(tokenRequest);
-        Response response = new Response();
-        response.setContentType(HttpContentType.APPLICATION_JSON);
+
         if (token == null) {
-            response.setStatus(HttpStatus.NOT_FOUND);
-            response.setBody("Username or password false");
+            return statusMessage(HttpStatus.BAD_REQUEST, "Username or password false");
         } else {
-            // create response with token in the body?
-            response.setStatus(HttpStatus.OK);
-            response.setBody(token.getToken());
+            return ok(token.getToken());
         }
-        return response;
     }
 
 

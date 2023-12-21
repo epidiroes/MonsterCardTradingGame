@@ -18,7 +18,11 @@ public class HttpMapper {
         request.setMethod(getHttpMethod(httpRequest));
         request.setRoute(getRoute(httpRequest));
         request.setHost(getHttpHeader("Host", httpRequest));
-        request.setContentType(getHttpContentType(getHttpHeader("Content-Type", httpRequest)));
+        String contentType = getHttpHeader("Content-Type", httpRequest);
+        if (contentType == null) {
+            contentType = "text/plain";
+        }
+        request.setContentType(getHttpContentType(contentType));
 
         // THOUGHT: don't do the content parsing in this method
         String contentLengthHeader = getHttpHeader("Content-Length", httpRequest);
@@ -62,9 +66,6 @@ public class HttpMapper {
     }
 
     private static HttpContentType getHttpContentType(String contentType) {
-        if (contentType == null) {
-            return null;
-        }
         return switch (contentType) {
             case "application/json" -> HttpContentType.APPLICATION_JSON;
             case "text/html" -> HttpContentType.TEXT_HTML;

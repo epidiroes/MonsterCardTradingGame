@@ -5,6 +5,7 @@ import org.example.apps.mctg.entity.User;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
 
 public class UserService {
     private final UserRepository userRepository;
@@ -18,6 +19,10 @@ public class UserService {
     }
 
     public User save(User user) {
+        Optional<User> findUser = userRepository.find(user.getUsername());
+        if (findUser.isPresent()) {
+            return null;
+        }
         user.setId(UUID.randomUUID().toString());
         return userRepository.save(user);
     }

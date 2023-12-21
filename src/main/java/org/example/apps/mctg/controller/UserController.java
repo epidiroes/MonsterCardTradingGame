@@ -40,12 +40,15 @@ public class UserController extends Controller {
 
     public Response readAll(Request request) {
         List<User> users = userService.findAll();
-        return json(users);
+        return ok(json(users));
     }
 
     public Response create(Request request) {
         User user = toObject(request, User.class);
         user = userService.save(user);
-        return json(user);
+        if (user == null) {
+            return statusMessage(HttpStatus.BAD_REQUEST, "User already exists");
+        }
+        return created(json(user));
     }
 }
