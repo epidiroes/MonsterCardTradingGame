@@ -1,7 +1,10 @@
 package org.example.apps.mctg.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.example.server.http.HttpContentType;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
@@ -52,6 +55,7 @@ public abstract class Controller {
 
     protected <T> T toObject(Request request, Class<T> targetClass) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setPropertyNamingStrategy(new PropertyNamingStrategies.UpperCamelCaseStrategy());
         T object;
         try {
             object = objectMapper.readValue(request.getBody(), targetClass);
