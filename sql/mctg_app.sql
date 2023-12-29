@@ -9,4 +9,22 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS cards (
+    id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    damage INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS packages (
+    id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(id),
+    card1_id VARCHAR(255) REFERENCES cards(id),
+    card2_id VARCHAR(255) REFERENCES cards(id),
+    card3_id VARCHAR(255) REFERENCES cards(id),
+    card4_id VARCHAR(255) REFERENCES cards(id),
+    card5_id VARCHAR(255) REFERENCES cards(id),
+    CONSTRAINT unique_cards UNIQUE (card1_id, card2_id, card3_id, card4_id, card5_id)
+);
+
+
 DROP TABLE users;
