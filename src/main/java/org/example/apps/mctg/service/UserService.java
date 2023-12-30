@@ -24,6 +24,7 @@ public class UserService {
             return null;
         }
         user.setId(UUID.randomUUID().toString());
+        user.setCoins(20);
         return userRepository.save(user);
     }
 }

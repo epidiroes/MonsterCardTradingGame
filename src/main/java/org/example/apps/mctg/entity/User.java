@@ -4,13 +4,14 @@ public class User {
     private String id;
     private String username;
     private String password;
-
+    private int coins;
     public User() {}
 
-    public User(String id, String username, String password) {
+    public User(String id, String username, String password, int coins) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.coins = coins;
     }
 
     public String getId() {
@@ -37,4 +38,11 @@ public class User {
         this.password = password;
     }
 
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
 }

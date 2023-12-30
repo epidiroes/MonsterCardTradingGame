@@ -6,7 +6,8 @@ DROP DATABASE mctgdb;
 CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(255) PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    coins INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS cards (
@@ -26,5 +27,7 @@ CREATE TABLE IF NOT EXISTS packages (
     CONSTRAINT unique_cards UNIQUE (card1_id, card2_id, card3_id, card4_id, card5_id)
 );
 
-
+DROP TABLE packages;
 DROP TABLE users;
+DROP TABLE cards;
+

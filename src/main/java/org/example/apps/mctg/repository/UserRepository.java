@@ -19,16 +19,17 @@ public class UserRepository {
 
         try (
                 Connection con = database.getConnection();
-                PreparedStatement pstmt = con.prepareStatement(FIND_SQL);
+                PreparedStatement stmt = con.prepareStatement(FIND_SQL);
         ) {
-            pstmt.setString(1, username);
-            ResultSet rs = pstmt.executeQuery();
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
             User user = null;
             while (rs.next()) {
                 user = new User(
                         rs.getString("id"),
                         rs.getString("username"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        rs.getInt("coins")
                 );
             }
 
@@ -55,7 +56,8 @@ public class UserRepository {
                 User user = new User(
                         rs.getString("id"),
                         rs.getString("username"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        rs.getInt("coins")
                 );
 
                 users.add(user);
@@ -68,16 +70,17 @@ public class UserRepository {
     }
 
     public User save(User user) {
-        String SAVE_SQL = "INSERT INTO users(id, username, password) VALUES (?, ?, ?)";
+        String SAVE_SQL = "INSERT INTO users(id, username, password, coins) VALUES (?, ?, ?, ?)";
         try (
                 Connection con = database.getConnection();
-                PreparedStatement pstmt = con.prepareStatement(SAVE_SQL);
+                PreparedStatement stmt = con.prepareStatement(SAVE_SQL);
         ) {
-            pstmt.setString(1, user.getId());
-            pstmt.setString(2, user.getUsername());
-            pstmt.setString(3, user.getPassword());
+            stmt.setString(1, user.getId());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getPassword());
+            stmt.setInt(4,user.getCoins());
 
-            pstmt.execute();
+            stmt.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
