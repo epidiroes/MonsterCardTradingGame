@@ -30,7 +30,7 @@ public abstract class Controller {
         Response response = new Response();
         response.setStatus(httpStatus);
         response.setContentType(HttpContentType.APPLICATION_JSON);
-        response.setBody("{ \"error\": \""+ httpStatus.getMessage() + "\", \"message\" \"" + body + "\"}");
+        response.setBody("{ \"error\": \""+ httpStatus.getMessage() + "\", \"message\": \"" + body + "\"}");
 
         return response;
     }

@@ -30,4 +30,3 @@ CREATE TABLE IF NOT EXISTS packages (
 DROP TABLE packages;
 DROP TABLE users;
 DROP TABLE cards;
-
