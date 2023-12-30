@@ -1,9 +1,6 @@
 package org.example.apps.mctg;
 
-import org.example.apps.mctg.controller.PackageController;
-import org.example.apps.mctg.controller.SessionController;
-import org.example.apps.mctg.controller.UserController;
-import org.example.apps.mctg.controller.Controller;
+import org.example.apps.mctg.controller.*;
 import org.example.server.ServerApplication;
 import org.example.server.http.HttpContentType;
 import org.example.server.http.HttpStatus;
@@ -22,6 +19,7 @@ public class MctgApp implements ServerApplication {
         this.controllers.add(new UserController());
         this.controllers.add(new SessionController());
         this.controllers.add(new PackageController());
+        this.controllers.add(new TransactionController());
     }
 
     @Override

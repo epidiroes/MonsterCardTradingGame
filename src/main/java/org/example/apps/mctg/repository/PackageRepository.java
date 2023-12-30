@@ -7,7 +7,9 @@ import org.example.apps.mctg.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +45,50 @@ public class PackageRepository {
                 cards.get(3).getId(),
                 cards.get(4).getId()
         );
+    }
+
+    public List<Package> findAll(User user) {
+        List<Package> packages = new ArrayList<>();
+        String FIND_ALL_SQL = "SELECT * FROM packages WHERE user_id = ?";
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(FIND_ALL_SQL);
+        ) {
+            stmt.setString(1,user.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Package pack = new Package(
+                        rs.getString("id"),
+                        rs.getString("user_id"),
+                        rs.getString("card1_id"),
+                        rs.getString("card2_id"),
+                        rs.getString("card3_id"),
+                        rs.getString("card4_id"),
+                        rs.getString("card5_id")
+                );
+                packages.add(pack);
+            }
+            return packages;
+        } catch (SQLException e) {
+            return packages;
+        }
+    }
+
+    public Package transaction(User user, Package pack) {
+        String UPDATE_USER_ID_SQL = "UPDATE packages SET user_id = ? WHERE id = ?";
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(UPDATE_USER_ID_SQL);
+        ) {
+            stmt.setString(1, user.getId());
+            stmt.setString(2, pack.getId());
+            stmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        pack.setUser_id(user.getId());
+        return pack;
     }
 
 }
