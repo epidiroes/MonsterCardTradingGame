@@ -2,21 +2,12 @@ package org.example.server.http;
 
 public class Request {
 
-    // GET, POST, PUT, DELETE
     private String method;
-
-    // /, /home, /package
     private String route;
-
     private String host;
-
-    // application/json, text/plain
     private String contentType;
-
-    // 0, 17
     private int contentLength;
-
-    // none, "{ "name": "foo" }"
+    private String authorization;
     private String body;
 
     public void setMethod(HttpMethod httpMethod) {
@@ -57,6 +48,14 @@ public class Request {
 
     public void setContentLength(int contentLength) {
         this.contentLength = contentLength;
+    }
+
+    public String getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(String authorization) {
+        this.authorization = authorization;
     }
 
     public String getBody() {

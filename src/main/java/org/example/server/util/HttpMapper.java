@@ -5,6 +5,7 @@ import org.example.server.http.HttpMethod;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,26 +18,26 @@ public class HttpMapper {
 
         request.setMethod(getHttpMethod(httpRequest));
         request.setRoute(getRoute(httpRequest));
+
         request.setHost(getHttpHeader("Host", httpRequest));
+
         String contentType = getHttpHeader("Content-Type", httpRequest);
-        if (contentType == null) {
-            contentType = "text/plain";
-        }
-        request.setContentType(getHttpContentType(contentType));
+        request.setContentType(getHttpContentType(Objects.requireNonNullElse(contentType, "text/plain")));
+
+        String authorization = getHttpHeader("Authorization", httpRequest);
+        request.setAuthorization(Objects.requireNonNullElse(authorization, ""));
 
         // THOUGHT: don't do the content parsing in this method
         String contentLengthHeader = getHttpHeader("Content-Length", httpRequest);
         if (null == contentLengthHeader) {
             return request;
         }
-
         int contentLength = Integer.parseInt(contentLengthHeader);
         request.setContentLength(contentLength);
 
         if (0 == contentLength) {
             return request;
         }
-
         request.setBody(httpRequest.substring(httpRequest.length() - contentLength));
 
         return request;
