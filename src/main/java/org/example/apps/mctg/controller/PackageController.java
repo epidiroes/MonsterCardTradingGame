@@ -35,7 +35,7 @@ public class PackageController extends Controller {
         return null;
     }
 
-    public Response create(Request request) {
+    private Response create(Request request) {
         List<Card> cards = toObjects(request, Card.class);
         Package p = packageService.save(request, cards);
         if (p == null) {

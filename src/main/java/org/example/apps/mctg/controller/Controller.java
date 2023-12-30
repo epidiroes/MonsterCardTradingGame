@@ -1,15 +1,12 @@
 package org.example.apps.mctg.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.example.server.http.HttpContentType;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
-import org.example.apps.mctg.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +67,9 @@ public abstract class Controller {
     protected <T> List<T> toObjects(Request request, Class<T> targetClass) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setPropertyNamingStrategy(new PropertyNamingStrategies.UpperCamelCaseStrategy());
+        String body = request.getBody().substring(1, request.getBody().length() - 1);
 
-        String[] parts = request.getBody().split("\\},\\s*\\{");
+        String[] parts = body.split("\\},\\s*\\{");
         for (int i = 0; i < parts.length; i++) {
             if (i != 0) {
                 parts[i] = "{" + parts[i];
