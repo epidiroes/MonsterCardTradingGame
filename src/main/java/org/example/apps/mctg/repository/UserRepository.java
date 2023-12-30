@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository {
-    private final String FIND_ALL_SQL = "SELECT * FROM users";
-    private final String SAVE_SQL = "INSERT INTO users(id, username, password) VALUES (?, ?, ?)";
     private  final Database database = new Database();
 
     public Optional<User> find(String username) {
@@ -47,10 +45,11 @@ public class UserRepository {
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
 
+        String FIND_ALL_SQL = "SELECT * FROM users";
         try (
                 Connection con = database.getConnection();
-                PreparedStatement pstmt = con.prepareStatement(FIND_ALL_SQL);
-                ResultSet rs = pstmt.executeQuery()
+                PreparedStatement stmt = con.prepareStatement(FIND_ALL_SQL);
+                ResultSet rs = stmt.executeQuery()
         ) {
             while (rs.next()) {
                 User user = new User(
@@ -69,6 +68,7 @@ public class UserRepository {
     }
 
     public User save(User user) {
+        String SAVE_SQL = "INSERT INTO users(id, username, password) VALUES (?, ?, ?)";
         try (
                 Connection con = database.getConnection();
                 PreparedStatement pstmt = con.prepareStatement(SAVE_SQL);
@@ -79,7 +79,7 @@ public class UserRepository {
 
             pstmt.execute();
         } catch (SQLException e) {
-            // meh
+            throw new RuntimeException(e);
         }
 
         return user;
