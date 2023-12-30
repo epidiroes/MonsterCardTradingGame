@@ -11,6 +11,9 @@ import org.example.server.http.Request;
 import org.example.server.http.Response;
 import org.example.apps.mctg.entity.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Controller {
 
     public abstract boolean supports(String route);
@@ -63,6 +66,32 @@ public abstract class Controller {
             throw new RuntimeException(e);
         }
         return object;
+    }
+    protected <T> List<T> toObjects(Request request, Class<T> targetClass) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setPropertyNamingStrategy(new PropertyNamingStrategies.UpperCamelCaseStrategy());
+
+        String[] parts = request.getBody().split("\\},\\s*\\{");
+        for (int i = 0; i < parts.length; i++) {
+            if (i != 0) {
+                parts[i] = "{" + parts[i];
+            }
+            if (i != parts.length - 1) {
+                parts[i] = parts[i] + "}";
+            }
+        }
+
+        List<T> objects = new ArrayList<>();
+        for (String part : parts) {
+            try {
+                T object = objectMapper.readValue(part, targetClass);
+                objects.add(object);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return objects;
     }
 
     protected <T> String json(T object) {
