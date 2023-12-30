@@ -87,4 +87,17 @@ public class UserRepository {
 
         return user;
     }
+
+    public void removeCoins(User user) {
+        String UPDATE_COIN_SQL = "UPDATE users SET coins = coins - 5 WHERE id = ?";
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(UPDATE_COIN_SQL);
+        ) {
+            stmt.setString(1, user.getId());
+            stmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
