@@ -2,6 +2,8 @@ package org.example.apps.mctg.controller;
 
 import com.sun.jdi.request.DuplicateRequestException;
 import org.example.apps.mctg.entity.Card;
+import org.example.apps.mctg.entity.Deck;
+import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.DeckRepository;
 import org.example.apps.mctg.repository.UserRepository;
 import org.example.apps.mctg.service.DeckService;
@@ -14,7 +16,7 @@ import java.util.List;
 public class DeckController extends Controller {
     private final DeckService deckService;
     public  DeckController() {
-        this.deckService = new DeckService(new UserRepository(), new DeckRepository());
+        this.deckService = new DeckService(new UserRepository(), new DeckRepository(), new CardRepository());
     }
 
     @Override
@@ -45,7 +47,7 @@ public class DeckController extends Controller {
 
     private Response read(Request request) {
         List<Card> cards = deckService.findAll(request);
-        if (cards.isEmpty()) {
+        if (cards == null) {
             return ok("There are no cards in the deck");
         }
         return ok(json(cards));
@@ -60,6 +62,11 @@ public class DeckController extends Controller {
     }
 
     private Response config(Request request) {
-        return ok("ok");
+        List<String> cardIdList = toList(request.getBody());
+        Deck deck = deckService.createDeck(request, cardIdList);
+        if (deck == null) {
+            return null;
+        }
+        return ok(json(deck));
     }
 }
