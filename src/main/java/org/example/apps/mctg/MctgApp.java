@@ -21,6 +21,7 @@ public class MctgApp implements ServerApplication {
         this.controllers.add(new PackageController());
         this.controllers.add(new TransactionController());
         this.controllers.add(new CardController());
+        this.controllers.add(new DeckController());
     }
 
     @Override
