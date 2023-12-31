@@ -26,12 +26,12 @@ public class UserController extends Controller {
     public Response handle(Request request) {
 
         if (request.getRoute().equals("/users")) {
-            switch (request.getMethod()) {
-                case "GET": return readAll(request);
-                case "POST": return create(request);
-            }
+            return switch (request.getMethod()) {
+                case "GET" -> readAll(request);
+                case "POST" -> create(request);
+                default -> status(HttpStatus.METHOD_NOT_ALLOWED);
+            };
 
-            return status(HttpStatus.METHOD_NOT_ALLOWED);
         }
 
 
