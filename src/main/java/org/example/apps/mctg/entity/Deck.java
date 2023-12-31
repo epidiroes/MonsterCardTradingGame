@@ -10,7 +10,7 @@ public class Deck {
 
     public Deck() {}
 
-    public Deck(String id, String user_id, String card1_id, String card2_id, String card3_id, String card4_id, String card5_id) {
+    public Deck(String id, String user_id, String card1_id, String card2_id, String card3_id, String card4_id) {
         this.id = id;
         this.user_id = user_id;
         this.card1_id = card1_id;
