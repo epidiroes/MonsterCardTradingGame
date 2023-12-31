@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CardRepository {
     private final Database database = new Database();
@@ -57,6 +58,35 @@ public class CardRepository {
             return cards;
         } catch (SQLException e) {
             return cards;
+        }
+    }
+
+    public Optional<Card> findById(String id) {
+        String FIND_SQL = "SELECT * FROM cards WHERE id = ?";
+
+        try(
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(FIND_SQL);
+        ) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            Card card = null;
+            while (rs.next()) {
+                card = new Card(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getInt("damage")
+                );
+            }
+
+            if (card != null) {
+                return Optional.of(card);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.err.print(e);
+            return Optional.empty();
         }
     }
 }
