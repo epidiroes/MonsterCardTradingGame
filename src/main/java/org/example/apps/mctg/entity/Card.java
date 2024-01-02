@@ -13,6 +13,10 @@ public class Card {
         this.damage = damage;
     }
 
+    public String toString() {
+        return "Id: " + this.getId() + ", Name: " + this.getName() + ", Damage: " + this.getDamage() + "\n";
+    }
+
     public String getId() {
         return id;
     }
