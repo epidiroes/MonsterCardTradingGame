@@ -5,6 +5,9 @@ public class User {
     private String username;
     private String password;
     private int coins;
+    private String name;
+    private String bio;
+    private String image;
     public User() {}
 
     public User(String id, String username, String password, int coins) {
@@ -12,6 +15,9 @@ public class User {
         this.username = username;
         this.password = password;
         this.coins = coins;
+        this.name = "";
+        this.bio = "";
+        this.image = "";
     }
 
     public String getId() {
@@ -44,5 +50,29 @@ public class User {
 
     public void setCoins(int coins) {
         this.coins = coins;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
