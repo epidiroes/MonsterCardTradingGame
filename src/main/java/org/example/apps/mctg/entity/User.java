@@ -20,6 +20,16 @@ public class User {
         this.image = "";
     }
 
+    public User(String id, String username, String password, int coins, String name, String bio, String image) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.coins = coins;
+        this.name = name;
+        this.bio = bio;
+        this.image = image;
+    }
+
     public String getId() {
         return id;
     }
