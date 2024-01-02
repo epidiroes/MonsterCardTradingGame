@@ -32,10 +32,13 @@ public class UserController extends Controller {
                 default -> status(HttpStatus.METHOD_NOT_ALLOWED);
             };
 
+        } else {
+            return switch (request.getMethod()) {
+                case "GET" -> read(request);
+                case "PUT" -> editUser(request);
+                default -> status(HttpStatus.METHOD_NOT_ALLOWED);
+            };
         }
-
-
-        return null;
     }
 
     public Response readAll(Request request) {
@@ -50,5 +53,17 @@ public class UserController extends Controller {
             return statusMessage(HttpStatus.BAD_REQUEST, "User already exists");
         }
         return created(json(user));
+    }
+
+    public Response read(Request request) {
+        User user = userService.find(request);
+        if (user == null) {
+            return status(HttpStatus.UNAUTHORIZED);
+        }
+        return ok(json(user));
+    }
+
+    public Response editUser(Request request) {
+        return ok("not implemented yet");
     }
 }
