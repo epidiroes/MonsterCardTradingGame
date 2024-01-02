@@ -1,5 +1,6 @@
 package org.example.apps.mctg.controller;
 
+import org.example.apps.mctg.dto.Bio;
 import org.example.apps.mctg.repository.UserRepository;
 import org.example.apps.mctg.service.UserService;
 import org.example.apps.mctg.entity.User;
@@ -64,6 +65,11 @@ public class UserController extends Controller {
     }
 
     public Response editUser(Request request) {
-        return ok("not implemented yet");
+        Bio bio = toObject(request, Bio.class);
+        User user = userService.edit(request, bio);
+        if (user == null) {
+            return status(HttpStatus.UNAUTHORIZED);
+        }
+        return ok(json(user));
     }
 }

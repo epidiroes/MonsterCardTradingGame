@@ -1,6 +1,7 @@
 package org.example.apps.mctg.repository;
 
 import org.example.apps.mctg.database.Database;
+import org.example.apps.mctg.dto.Bio;
 import org.example.apps.mctg.entity.User;
 
 import java.sql.Connection;
@@ -29,7 +30,10 @@ public class UserRepository {
                         rs.getString("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getInt("coins")
+                        rs.getInt("coins"),
+                        rs.getString("name"),
+                        rs.getString("bio"),
+                        rs.getString("image")
                 );
             }
 
@@ -43,6 +47,7 @@ public class UserRepository {
             return Optional.empty();
         }
     }
+
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
 
@@ -86,6 +91,33 @@ public class UserRepository {
         }
 
         return user;
+    }
+
+    public User edit(User user, Bio bio) {
+        String UPDATE_BIO_SQL = "UPDATE users SET name = ?, bio = ?, image = ? WHERE id = ?";
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(UPDATE_BIO_SQL);
+        ) {
+            stmt.setString(1, bio.getName());
+            stmt.setString(2, bio.getBio());
+            stmt.setString(3, bio.getImage());
+            stmt.setString(4, user.getId());
+
+            stmt.execute();
+        } catch (SQLException e) {
+            return null;
+        }
+
+        return new User(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getCoins(),
+                bio.getName(),
+                bio.getBio(),
+                bio.getImage()
+        );
     }
 
     public void removeCoins(User user) {
