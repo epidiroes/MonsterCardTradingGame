@@ -1,6 +1,7 @@
 package org.example.apps.mctg.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.example.server.http.HttpContentType;
@@ -8,6 +9,7 @@ import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +92,15 @@ public abstract class Controller {
         }
 
         return objects;
+    }
+
+    protected List<String> toList(String body) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(body, new TypeReference<List<String>>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected <T> String json(T object) {
