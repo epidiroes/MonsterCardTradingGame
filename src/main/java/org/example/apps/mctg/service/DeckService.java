@@ -38,7 +38,7 @@ public class DeckService {
         return deckRepository.findAll(user);
     }
 
-    public Deck createDeck(Request request, List<String> cardId) {
+    public Deck configDeck(Request request, List<String> cardId) {
         if (cardId.size() != 4) {
             return null;
         }
@@ -62,6 +62,19 @@ public class DeckService {
             Card card = cardOptional.get();
             cards.add(card);
         }
-        return deckRepository.createDeck(user, cards);
+
+        // create deck if it isn't set yet, or update if the cards differ
+        List<Card> deck = this.findAll(request);
+        if (deck.isEmpty()) {
+            return deckRepository.create(user, cards);
+        } else {
+            for(Card card : deck) {
+                if(!cardId.contains(card.getId())) {
+                    return deckRepository.update(user, cards);
+                }
+            }
+            return deckRepository.find(user);
+        }
+
     }
 }

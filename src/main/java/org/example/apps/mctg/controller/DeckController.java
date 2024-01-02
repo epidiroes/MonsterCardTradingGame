@@ -55,18 +55,22 @@ public class DeckController extends Controller {
 
     private Response readPlain(Request request) {
         List<Card> cards = deckService.findAll(request);
-        if (cards.isEmpty()) {
+        if (cards == null) {
             return ok("There are no cards in the deck");
         }
-        return ok(json(cards));
+        StringBuilder message = new StringBuilder(500);
+        for (Card card : cards) {
+            message.append(card.toString());
+        }
+        return ok(message.toString());
     }
 
     private Response config(Request request) {
         List<String> cardIdList = toList(request.getBody());
-        Deck deck = deckService.createDeck(request, cardIdList);
+        Deck deck = deckService.configDeck(request, cardIdList);
         if (deck == null) {
-            return null;
+            return status(HttpStatus.BAD_REQUEST);
         }
-        return ok(json(deck));
+        return created(json(deck));
     }
 }
