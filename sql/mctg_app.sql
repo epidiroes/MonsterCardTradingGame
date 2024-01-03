@@ -40,6 +40,17 @@ CREATE TABLE IF NOT EXISTS decks (
     CONSTRAINT unique_deck_cards UNIQUE (card1_id, card2_id, card3_id, card4_id)
 );
 
+CREATE TABLE IF NOT EXISTS battles (
+    id VARCHAR(255) PRIMARY KEY,
+    player1 VARCHAR(255)  REFERENCES users(id),
+    player2 VARCHAR(255)  REFERENCES users(id),
+    player1_score INT,
+    player2_score INT,
+    winner VARCHAR(255)  REFERENCES users(id),
+    log VARCHAR(1500)
+);
+
+
 DROP TABLE decks;
 DROP TABLE packages;
 DROP TABLE users;
