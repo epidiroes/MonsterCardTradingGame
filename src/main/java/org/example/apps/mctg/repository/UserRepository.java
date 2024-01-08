@@ -48,6 +48,34 @@ public class UserRepository {
         }
     }
 
+    public User findById(String id) {
+        String FIND_BY_ID_SQL = "SELECT * FROM users WHERE id = ?";
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(FIND_BY_ID_SQL);
+        ) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            User user = null;
+            if (rs.next()) {
+                return new User(
+                        rs.getString("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getInt("coins"),
+                        rs.getString("name"),
+                        rs.getString("bio"),
+                        rs.getString("image")
+                );
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.err.print(e);
+            return null;
+        }
+    }
+
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
 
