@@ -8,9 +8,20 @@ public class Battle {
     private int player2_score;
     private String winner;
     private String log;
+    private boolean open;
 
     public Battle() {};
-    public Battle(String id, String player1, String player2, int player1_score, int player2_score, String winner, String log) {
+    public Battle(String id, String player1) {
+        this.id = id;
+        this.player1 = player1;
+        this.player2 = null;
+        this.player1_score = 0;
+        this.player2_score = 0;
+        this.winner = null;
+        this.log = null;
+        this.open = true;
+    }
+    public Battle(String id, String player1, String player2, int player1_score, int player2_score, String winner, String log, boolean open) {
         this.id = id;
         this.player1 = player1;
         this.player2 = player2;
@@ -18,6 +29,7 @@ public class Battle {
         this.player2_score = player2_score;
         this.winner = winner;
         this.log = log;
+        this.open = open;
     }
 
     public String getId() {
@@ -74,5 +86,13 @@ public class Battle {
 
     public void setLog(String log) {
         this.log = log;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 }

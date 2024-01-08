@@ -47,10 +47,11 @@ CREATE TABLE IF NOT EXISTS battles (
     player1_score INT,
     player2_score INT,
     winner VARCHAR(255)  REFERENCES users(id),
-    log VARCHAR(1500)
+    log VARCHAR(1500),
+    open BOOLEAN
 );
 
-
+DROP TABLE battles;
 DROP TABLE decks;
 DROP TABLE packages;
 DROP TABLE users;
