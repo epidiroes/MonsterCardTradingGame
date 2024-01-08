@@ -37,7 +37,7 @@ public class UserController extends Controller {
             return switch (request.getMethod()) {
                 case "GET" -> read(request);
                 case "PUT" -> editUser(request);
-                default -> status(HttpStatus.METHOD_NOT_ALLOWED);
+                default -> status(HttpStatus.NOT_FOUND);
             };
         }
     }

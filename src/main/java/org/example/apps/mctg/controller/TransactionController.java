@@ -27,7 +27,7 @@ public class TransactionController extends Controller {
             }
             return status(HttpStatus.METHOD_NOT_ALLOWED);
         }
-        return null;
+        return status(HttpStatus.NOT_FOUND);
     }
 
     private Response acquire(Request request) {

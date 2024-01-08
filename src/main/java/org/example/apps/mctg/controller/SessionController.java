@@ -29,7 +29,7 @@ public class SessionController extends Controller {
             }
             return status(HttpStatus.METHOD_NOT_ALLOWED);
         }
-        return null;
+        return status(HttpStatus.NOT_FOUND);
     }
 
     private Response getToken(Request request) {
