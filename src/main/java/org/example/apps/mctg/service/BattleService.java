@@ -4,8 +4,6 @@ import org.example.apps.mctg.entity.Battle;
 import org.example.apps.mctg.entity.User;
 import org.example.apps.mctg.logic.BattleLogic;
 import org.example.apps.mctg.repository.BattleRepository;
-import org.example.apps.mctg.repository.CardRepository;
-import org.example.apps.mctg.repository.DeckRepository;
 import org.example.apps.mctg.repository.UserRepository;
 import org.example.server.http.Request;
 
@@ -41,12 +39,43 @@ public class BattleService {
             return awaitBattle(battle);
         } else {
             Battle battle = openBattle.get();
-            return battleLogic.battle(battle.getPlayer1(), user.getId());
+            Battle finishedBattle = battleLogic.battle(battle.getPlayer1(), user.getId());
+            return message(finishedBattle, 2);
         }
     }
 
     private String awaitBattle(Battle battle) {
         // TODO
-        return null;
+        // loop where i continue to check if the battle is still open
+        while (battleRepository.isOpen(battle.getId())) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                return null;
+            }
+        }
+        return message(battleRepository.findBattle(battle.getId()), 1);
+    }
+
+    private String message(Battle battle, int player) {
+        StringBuilder builder = new StringBuilder();
+        int score1 = battle.getPlayer1_score();
+        int score2 = battle.getPlayer2_score();
+        boolean won = false;
+        if (player == 1) {
+            won = score1 > score2;
+        } else if (player == 2) {
+            won = score2 > score1;
+        }
+        if (won) {
+            builder.append("YOU WON, with a score of ");
+        } else {
+            builder.append("YOU LOST, with a score of ");
+        }
+        builder.append(battle.getPlayer1_score());
+        builder.append(":");
+        builder.append(battle.getPlayer2_score());
+
+        return builder.toString();
     }
 }
