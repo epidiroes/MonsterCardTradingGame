@@ -27,8 +27,6 @@ public class BattleRepository {
                         rs.getString("id"),
                         rs.getString("player1"),
                         rs.getString("player2"),
-                        rs.getInt("player1_score"),
-                        rs.getInt("player2_score"),
                         rs.getString("winner"),
                         rs.getString("log"),
                         rs.getBoolean("open")
