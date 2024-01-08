@@ -44,8 +44,6 @@ CREATE TABLE IF NOT EXISTS battles (
     id VARCHAR(255) PRIMARY KEY,
     player1 VARCHAR(255)  REFERENCES users(id),
     player2 VARCHAR(255)  REFERENCES users(id),
-    player1_score INT,
-    player2_score INT,
     winner VARCHAR(255)  REFERENCES users(id),
     log VARCHAR(1500),
     open BOOLEAN
