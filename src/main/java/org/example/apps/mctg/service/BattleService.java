@@ -23,11 +23,13 @@ public class BattleService {
         // Authentication
         String authorization = request.getAuthorization();
         if (Objects.equals(authorization, "")) {
+            System.err.print("no authorization");
             return null;
         }
         String name = authorization.substring(authorization.indexOf(" ") + 1, authorization.indexOf("-", authorization.indexOf(" ") + 1));
         Optional<User> userOptional = userRepository.find(name);
         if (userOptional.isEmpty()) {
+            System.err.print("user not found");
             return null;
         }
         User user = userOptional.get();
@@ -39,8 +41,8 @@ public class BattleService {
             return awaitBattle(battle);
         } else {
             Battle battle = openBattle.get();
-            Battle finishedBattle = battleLogic.battle(battle.getPlayer1(), user.getId());
-            return message(finishedBattle, 2);
+            User opponent = userRepository.findById(battle.getPlayer1());
+            return battleLogic.battle(battle, opponent, user).getLog();
         }
     }
 
@@ -51,31 +53,10 @@ public class BattleService {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
+                System.err.print("InterruptedException");
                 return null;
             }
         }
-        return message(battleRepository.findBattle(battle.getId()), 1);
-    }
-
-    private String message(Battle battle, int player) {
-        StringBuilder builder = new StringBuilder();
-        int score1 = battle.getPlayer1_score();
-        int score2 = battle.getPlayer2_score();
-        boolean won = false;
-        if (player == 1) {
-            won = score1 > score2;
-        } else if (player == 2) {
-            won = score2 > score1;
-        }
-        if (won) {
-            builder.append("YOU WON, with a score of ");
-        } else {
-            builder.append("YOU LOST, with a score of ");
-        }
-        builder.append(battle.getPlayer1_score());
-        builder.append(":");
-        builder.append(battle.getPlayer2_score());
-
-        return builder.toString();
+        return battleRepository.findBattle(battle.getId()).getLog();
     }
 }
