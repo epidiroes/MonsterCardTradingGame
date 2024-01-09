@@ -19,7 +19,7 @@ public class BattleService {
         this.battleRepository = battleRepository;
         this.battleLogic = battleLogic;
     }
-    public String battle(Request request) {
+    public synchronized String battle(Request request) {
         // Authentication
         String authorization = request.getAuthorization();
         if (Objects.equals(authorization, "")) {
@@ -38,25 +38,20 @@ public class BattleService {
         Optional<Battle> openBattle = battleRepository.findOpenBattle();
         if (openBattle.isEmpty()) {
             Battle battle = battleRepository.openBattle(user);
-            return awaitBattle(battle);
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                return "interruped";
+            }
+            Battle foundBattle = battleRepository.findBattle(battle.getId());
+            return foundBattle.getLog();
         } else {
             Battle battle = openBattle.get();
             User opponent = userRepository.findById(battle.getPlayer1());
-            return battleLogic.battle(battle, opponent, user).getLog();
+            Battle finishedBattle = battleLogic.battle(battle, opponent, user);
+            battleRepository.update(finishedBattle);
+            notify();
+            return finishedBattle.getLog();
         }
-    }
-
-    private String awaitBattle(Battle battle) {
-        // TODO
-        // loop where i continue to check if the battle is still open
-        while (battleRepository.isOpen(battle.getId())) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                System.err.print("InterruptedException");
-                return null;
-            }
-        }
-        return battleRepository.findBattle(battle.getId()).getLog();
     }
 }
