@@ -40,15 +40,32 @@ CREATE TABLE IF NOT EXISTS decks (
     CONSTRAINT unique_deck_cards UNIQUE (card1_id, card2_id, card3_id, card4_id)
 );
 
+DROP TABLE battles;
 CREATE TABLE IF NOT EXISTS battles (
     id VARCHAR(255) PRIMARY KEY,
     player1 VARCHAR(255)  REFERENCES users(id),
     player2 VARCHAR(255)  REFERENCES users(id),
     winner VARCHAR(255)  REFERENCES users(id),
-    log VARCHAR(1500),
+    log VARCHAR,
     open BOOLEAN
 );
 
+CREATE TABLE IF NOT EXISTS stats (
+    id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(id),
+    elo INT,
+    games_played INT,
+    games_won INT
+);
+
+CREATE TABLE IF NOT EXISTS scoreboard (
+    id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(id),
+    stats_id VARCHAR(255) REFERENCES stats(id)
+);
+
+DROP TABLE scoreboard;
+DROP TABLE stats;
 DROP TABLE battles;
 DROP TABLE decks;
 DROP TABLE packages;
