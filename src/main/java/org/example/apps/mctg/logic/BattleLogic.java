@@ -30,25 +30,29 @@ public class BattleLogic {
 
         StringBuilder log = new StringBuilder();
         Random rand = new Random();
+        String name1 = user1.getName();
+        String name2 = user2.getName();
 
-        log.append("The battle between ").append(user1.getName()).append(" and ");
-        log.append(user2.getName()).append(" begins ...\n");
+        log.append("\nThe battle between ").append(name1).append(" and ");
+        log.append(name2).append(" begins ...\n");
         for (int round = 0; round < maxRounds; round++) {
             log.append("\nRound ").append(round).append(": ");
             Card card1 = deck1.get(rand.nextInt(deck1.size()));
             Card card2 = deck2.get(rand.nextInt(deck2.size()));
+            String card1Name = card1.getName();
+            String card2Name = card2.getName();
 
-            log.append(card1.getName()).append(" vs ").append(card2.getName());
+            log.append(card1Name).append(" vs ").append(card2Name);
             Status result = fight(card1, card2);
             Card card = null;
             if (result.equals(Status.CARD1)) {
                 card = card2;
-                log.append(" -> ").append(card1.getName()).append(" wins! ");
-                log.append(card2.getName()).append(" goes to ").append(user1.getName()).append("\n");
+                log.append(" -> ").append(card1Name).append(" wins! ");
+                log.append(card2Name).append(" goes to ").append(name1).append("\n");
             } else if (result.equals(Status.CARD2)) {
                 card = card1;
-                log.append(" -> ").append(card2.getName()).append(" wins! ");
-                log.append(card1.getName()).append(" goes to ").append(user2.getName()).append("\n");
+                log.append(" -> ").append(card2Name).append(" wins! ");
+                log.append(card1Name).append(" goes to ").append(name2).append("\n");
             }
             if (!result.equals(Status.DRAW)) {
                 if (deck1.contains(card)) {
