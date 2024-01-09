@@ -101,4 +101,25 @@ public class BattleRepository {
             return true;
         }
     }
+
+    public Battle update(Battle battle) {
+        String UPDATE_SQL = "UPDATE battles SET player1 = ?, player2 = ?, winner = ?, log = ?, open = ? WHERE id = ?";
+
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(UPDATE_SQL);
+        ) {
+            stmt.setString(1, battle.getPlayer1());
+            stmt.setString(2, battle.getPlayer2());
+            stmt.setString(3, battle.getWinner());
+            stmt.setString(4, battle.getLog());
+            stmt.setBoolean(5, battle.isOpen());
+            stmt.setString(6, battle.getId());
+
+            stmt.execute();
+        } catch (SQLException e) {
+            return null;
+        }
+        return battle;
+    }
 }
