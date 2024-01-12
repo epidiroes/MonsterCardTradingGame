@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS cards (
     id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(id),
     name VARCHAR(255) NOT NULL,
     damage INT NOT NULL
 );
@@ -40,7 +41,6 @@ CREATE TABLE IF NOT EXISTS decks (
     CONSTRAINT unique_deck_cards UNIQUE (card1_id, card2_id, card3_id, card4_id)
 );
 
-DROP TABLE battles;
 CREATE TABLE IF NOT EXISTS battles (
     id VARCHAR(255) PRIMARY KEY,
     player1 VARCHAR(255)  REFERENCES users(id),
@@ -69,5 +69,6 @@ DROP TABLE stats;
 DROP TABLE battles;
 DROP TABLE decks;
 DROP TABLE packages;
-DROP TABLE users;
 DROP TABLE cards;
+DROP TABLE users;
+
