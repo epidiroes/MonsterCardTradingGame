@@ -60,7 +60,6 @@ CREATE TABLE IF NOT EXISTS stats (
 
 CREATE TABLE IF NOT EXISTS scoreboard (
     id VARCHAR(255) PRIMARY KEY,
-    user_id VARCHAR(255) REFERENCES users(id),
     stats_id VARCHAR(255) REFERENCES stats(id)
 );
 

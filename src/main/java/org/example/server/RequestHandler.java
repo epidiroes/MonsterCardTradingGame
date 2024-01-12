@@ -1,6 +1,8 @@
 package org.example.server;
 
 import org.example.server.ServerApplication;
+import org.example.server.http.HttpContentType;
+import org.example.server.http.HttpException;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
 import org.example.server.util.HttpMapper;
@@ -42,7 +44,14 @@ public class RequestHandler implements Runnable {
         String httpRequest = getHttpStringFromStream(in);
 
         Request request = HttpMapper.toRequestObject(httpRequest);
-        Response response = app.handle(request);
+        Response response = new Response();
+        try {
+            response = app.handle(request);
+        } catch (HttpException e) {
+            response.setStatus(e.getStatus());
+            response.setContentType(HttpContentType.APPLICATION_JSON);
+            response.setBody(e.getMessage());
+        }
 
         out = new PrintWriter(client.getOutputStream(), true);
         out.write(HttpMapper.toResponseString(response));
