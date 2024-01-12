@@ -1,7 +1,9 @@
 package org.example.apps.mctg.controller;
 
 import org.example.apps.mctg.dto.Bio;
+import org.example.apps.mctg.repository.StatsRepository;
 import org.example.apps.mctg.repository.UserRepository;
+import org.example.apps.mctg.service.StatsService;
 import org.example.apps.mctg.service.UserService;
 import org.example.apps.mctg.entity.User;
 import org.example.server.http.HttpStatus;
@@ -13,11 +15,11 @@ import java.util.List;
 public class UserController extends Controller {
 
     private final UserService userService;
-
+    private final StatsService statsService;
     public UserController() {
         this.userService = new UserService(new UserRepository());
+        this.statsService = new StatsService(new StatsRepository());
     }
-
     @Override
     public boolean supports(String route) {
         return route.startsWith("/users");
@@ -53,6 +55,7 @@ public class UserController extends Controller {
         if (user == null) {
             return statusMessage(HttpStatus.BAD_REQUEST, "User already exists");
         }
+        statsService.createStats(user);
         return created(json(user));
     }
 
