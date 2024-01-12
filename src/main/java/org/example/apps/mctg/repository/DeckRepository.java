@@ -33,6 +33,7 @@ public class DeckRepository {
             while (rs.next()) {
                 Card card = new Card(
                         rs.getString("id"),
+                        rs.getString("user_id"),
                         rs.getString("name"),
                         rs.getInt("damage")
                 );
@@ -100,6 +101,24 @@ public class DeckRepository {
                 cards.get(2).getId(),
                 cards.get(3).getId()
         );
+    }
+
+    public void reset(User user) {
+        String UPDATE_SQL = "UPDATE decks SET card1_id = ?, card2_id = ?, card3_id =  ?, card4_id = ? WHERE user_id = ?";
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(UPDATE_SQL);
+        ) {
+            stmt.setString(1, null);
+            stmt.setString(2, null);
+            stmt.setString(3, null);
+            stmt.setString(4, null);
+            stmt.setString(5, user.getId());
+
+            stmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Deck find(User user) {

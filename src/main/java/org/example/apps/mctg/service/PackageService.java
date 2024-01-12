@@ -34,14 +34,15 @@ public class PackageService {
         User admin = user.get();
 
         // save cards
-        if(!saveAll(cards)) {
+        if(!saveAll(cards, admin)) {
             return null;
         }
         return packageRepository.save(admin, cards);
     }
 
-    public boolean saveAll(List<Card> cards) {
+    public boolean saveAll(List<Card> cards, User user) {
         for (Card card : cards) {
+            card.setUser_id(user.getId());
             if (!cardRepository.save(card)) {
                 return false;
             }

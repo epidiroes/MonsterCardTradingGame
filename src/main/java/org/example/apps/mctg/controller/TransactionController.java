@@ -1,6 +1,7 @@
 package org.example.apps.mctg.controller;
 
 import org.example.apps.mctg.entity.Package;
+import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.PackageRepository;
 import org.example.apps.mctg.repository.UserRepository;
 import org.example.apps.mctg.service.TransactionService;
@@ -11,7 +12,7 @@ import org.example.server.http.Response;
 public class TransactionController extends Controller {
     private final TransactionService transactionService;
     public TransactionController() {
-        this.transactionService = new TransactionService(new PackageRepository(), new UserRepository());
+        this.transactionService = new TransactionService(new PackageRepository(), new UserRepository(), new CardRepository());
     }
 
     @Override
