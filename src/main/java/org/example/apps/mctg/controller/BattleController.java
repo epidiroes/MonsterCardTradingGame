@@ -13,7 +13,7 @@ import org.example.server.http.Response;
 public class BattleController extends Controller {
     private final BattleService battleService;
     public BattleController() {
-        this.battleService = new BattleService(new UserRepository(), new BattleRepository(), new BattleLogic(new DeckRepository()));
+        this.battleService = new BattleService(new UserRepository(), new BattleRepository(), new BattleLogic(new DeckRepository(), new CardRepository()));
     }
     @Override
     public boolean supports(String route) {
