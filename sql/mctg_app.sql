@@ -58,7 +58,16 @@ CREATE TABLE IF NOT EXISTS stats (
     games_won INT
 );
 
+CREATE TABLE IF NOT EXISTS tradings (
+    id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(id),
+    card_to_trade VARCHAR(255) REFERENCES cards(id),
+    type VARCHAR(255),
+    minimum_damage INT
+);
 
+
+DROP TABLE tradings;
 DROP TABLE stats;
 DROP TABLE battles;
 DROP TABLE decks;
