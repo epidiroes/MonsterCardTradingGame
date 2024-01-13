@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class StatsRepository {
@@ -35,6 +37,30 @@ public class StatsRepository {
             throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "an error occurred while searching for user stats");
         }
         throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "no stats found for given user");
+    }
+
+    public List<Stat> findAll() {
+        String FIND_ALL_SQL = "SELECT * FROM stats ORDER BY elo DESC";
+        List<Stat> stats = new ArrayList<>();
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(FIND_ALL_SQL);
+                ResultSet rs = stmt.executeQuery();
+        ) {
+            while (rs.next()) {
+                Stat stat = new Stat(
+                        rs.getString("id"),
+                        rs.getString("user_id"),
+                        rs.getInt("elo"),
+                        rs.getInt("games_played"),
+                        rs.getInt("games_won")
+                );
+                stats.add(stat);
+            }
+        } catch (SQLException e) {
+            throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "an error occurred while searching for all user stats");
+        }
+        return stats;
     }
 
     public void create(User user) {
