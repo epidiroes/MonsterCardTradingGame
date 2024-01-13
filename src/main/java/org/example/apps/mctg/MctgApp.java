@@ -23,6 +23,7 @@ public class MctgApp implements ServerApplication {
         this.controllers.add(new CardController());
         this.controllers.add(new DeckController());
         this.controllers.add(new StatsController());
+        this.controllers.add(new ScoreboardController());
         this.controllers.add(new BattleController());
     }
 
