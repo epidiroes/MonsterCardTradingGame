@@ -15,6 +15,30 @@ import java.util.List;
 public class TradingsRepository {
     private final Database database = new Database();
 
+    public Trade findById(String id) {
+        String FIND_BY_ID_SQL = "SELECT * FROM tradings WHERE id = ?";
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(FIND_BY_ID_SQL);
+        ) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Trade(
+                        rs.getString("id"),
+                        rs.getString("user_id"),
+                        rs.getString("card_to_trade"),
+                        rs.getString("type"),
+                        rs.getInt("minimum_damage")
+                );
+            }
+        } catch (SQLException e) {
+            throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "error while searching for all trades");
+        }
+        throw new HttpException(HttpStatus.BAD_REQUEST, "trade not found");
+    }
+
     public List<Trade> findAll() {
         String FIND_ALL_SQL = "SELECT * FROM tradings";
         List<Trade> trades = new ArrayList<>();
@@ -40,16 +64,16 @@ public class TradingsRepository {
     }
 
     public Trade save(Trade trade) {
-        String SAVE_SQL = "INSERT INTO tradings(id, user_id, card_to_trade, type, minimum_damage) VALUES (?,?,?,?)";
+        String SAVE_SQL = "INSERT INTO tradings(id, user_id, card_to_trade, type, minimum_damage) VALUES (?,?,?,?,?)";
         try (
                 Connection con = database.getConnection();
                 PreparedStatement stmt = con.prepareStatement(SAVE_SQL);
         ) {
             stmt.setString(1, trade.getId());
-            stmt.setString(2, trade.getUser_id());
-            stmt.setString(3, trade.getCard_to_trade());
+            stmt.setString(2, trade.getUserId());
+            stmt.setString(3, trade.getCardToTrade());
             stmt.setString(4, trade.getType());
-            stmt.setInt(5, trade.getMinimum_damage());
+            stmt.setInt(5, trade.getMinimumDamage());
 
             stmt.execute();
         } catch (SQLException e) {
@@ -59,7 +83,7 @@ public class TradingsRepository {
     }
 
     public void delete(String id) {
-        String DELETE_SQL = "DELETE FROM trading WHERE id = ?";
+        String DELETE_SQL = "DELETE FROM tradings WHERE id = ?";
         try (
                 Connection con = database.getConnection();
                 PreparedStatement stmt = con.prepareStatement(DELETE_SQL);
