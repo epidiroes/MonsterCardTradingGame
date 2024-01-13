@@ -58,12 +58,7 @@ CREATE TABLE IF NOT EXISTS stats (
     games_won INT
 );
 
-CREATE TABLE IF NOT EXISTS scoreboard (
-    id VARCHAR(255) PRIMARY KEY,
-    stats_id VARCHAR(255) REFERENCES stats(id)
-);
 
-DROP TABLE scoreboard;
 DROP TABLE stats;
 DROP TABLE battles;
 DROP TABLE decks;
