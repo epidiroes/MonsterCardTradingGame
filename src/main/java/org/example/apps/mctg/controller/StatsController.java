@@ -36,11 +36,7 @@ public class StatsController extends Controller {
     }
 
     private Response read(Request request) {
-        Optional<User> optionalUser = authorizationService.authorizedUser(request.getAuthorization());
-        if (optionalUser.isEmpty()) {
-            return status(HttpStatus.UNAUTHORIZED);
-        }
-        User user = optionalUser.get();
+        User user = authorizationService.authorizedUser(request.getAuthorization());
         return ok(json(statsService.read(user)));
     }
 }

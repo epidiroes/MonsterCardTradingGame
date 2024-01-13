@@ -35,10 +35,7 @@ public class ScoreboardController extends Controller {
     }
 
     private Response read(Request request) {
-        Optional<User> optionalUser = authorizationService.authorizedUser(request.getAuthorization());
-        if (optionalUser.isEmpty()) {
-            return status(HttpStatus.UNAUTHORIZED);
-        }
+        authorizationService.checkAuthorization(request.getAuthorization());
         return ok(json(statsService.readAll()));
     }
 }
