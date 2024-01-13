@@ -2,17 +2,17 @@ package org.example.apps.mctg.entity;
 
 public class Trade {
     String id;
-    String user_id;
-    String card_to_trade;
+    String userId;
+    String cardToTrade;
     String type;
-    int minimum_damage;
+    int minimumDamage;
     public Trade() {}
     public Trade(String id, String user_id, String card_to_trade, String type, int minimum_damage) {
         this.id = id;
-        this.user_id = user_id;
-        this.card_to_trade = card_to_trade;
+        this.userId = user_id;
+        this.cardToTrade = card_to_trade;
         this.type = type;
-        this.minimum_damage = minimum_damage;
+        this.minimumDamage = minimum_damage;
     }
 
     public String getId() {
@@ -23,20 +23,20 @@ public class Trade {
         this.id = id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getCard_to_trade() {
-        return card_to_trade;
+    public String getCardToTrade() {
+        return cardToTrade;
     }
 
-    public void setCard_to_trade(String card_to_trade) {
-        this.card_to_trade = card_to_trade;
+    public void setCardToTrade(String cardToTrade) {
+        this.cardToTrade = cardToTrade;
     }
 
     public String getType() {
@@ -47,11 +47,11 @@ public class Trade {
         this.type = type;
     }
 
-    public int getMinimum_damage() {
-        return minimum_damage;
+    public int getMinimumDamage() {
+        return minimumDamage;
     }
 
-    public void setMinimum_damage(int minimum_damage) {
-        this.minimum_damage = minimum_damage;
+    public void setMinimumDamage(int minimumDamage) {
+        this.minimumDamage = minimumDamage;
     }
 }
