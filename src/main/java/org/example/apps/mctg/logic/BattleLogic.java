@@ -5,7 +5,7 @@ import org.example.apps.mctg.entity.Card;
 import org.example.apps.mctg.entity.User;
 import org.example.apps.mctg.enums.CreatureType;
 import org.example.apps.mctg.enums.ElementType;
-import org.example.apps.mctg.enums.Status;
+import org.example.apps.mctg.enums.BattleStatus;
 import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.DeckRepository;
 
@@ -50,18 +50,18 @@ public class BattleLogic {
 
             log.append(card1Name).append(" (").append(card1.getDamage()).append(")").
                     append(" vs ").append(card2Name).append(" (").append(card2.getDamage()).append(")");
-            Status result = fight(card1, card2);
+            BattleStatus result = fight(card1, card2);
             Card card = null;
-            if (result.equals(Status.CARD1)) {
+            if (result.equals(BattleStatus.CARD1)) {
                 card = card2;
                 log.append(" -> ").append(card1Name).append(" wins! ");
                 log.append(card2Name).append(" goes to ").append(name1).append("\n");
-            } else if (result.equals(Status.CARD2)) {
+            } else if (result.equals(BattleStatus.CARD2)) {
                 card = card1;
                 log.append(" -> ").append(card2Name).append(" wins! ");
                 log.append(card1Name).append(" goes to ").append(name2).append("\n");
             }
-            if (!result.equals(Status.DRAW)) {
+            if (!result.equals(BattleStatus.DRAW)) {
                 if (deck1.contains(card)) {
                     deck1.remove(card);
                     deck2.add(card);
@@ -98,28 +98,28 @@ public class BattleLogic {
         return battle;
     }
 
-    private Status fight(Card card1, Card card2) {
+    private BattleStatus fight(Card card1, Card card2) {
 
         if (card1.isSpell() || card2.isSpell()) {
 
             if (card1.creatureType().equals(CreatureType.KRAKEN)) {
-                return Status.CARD1;
+                return BattleStatus.CARD1;
 
             } else if (card2.creatureType().equals(CreatureType.KRAKEN)) {
-                return Status.CARD2;
+                return BattleStatus.CARD2;
             }
             if (card1.hasElementType() && card2.hasElementType()) {
                 if (card1.getDamage() * card1.getDamageMultiplier(card2) > card2.getDamage() * card2.getDamageMultiplier(card1)) {
-                    return Status.CARD1;
+                    return BattleStatus.CARD1;
 
                 } else if (card2.getDamage() * card2.getDamageMultiplier(card1) > card1.getDamage() * card1.getDamageMultiplier(card2)) {
-                    return Status.CARD2;
+                    return BattleStatus.CARD2;
                 }
             } else if (card1.creatureType().equals(CreatureType.KNIGHT) && card2.elementType().equals(ElementType.WATER)) {
-                return Status.CARD2;
+                return BattleStatus.CARD2;
 
             } else if (card2.creatureType().equals(CreatureType.KNIGHT) && card1.elementType().equals(ElementType.WATER)) {
-                return Status.CARD1;
+                return BattleStatus.CARD1;
             }
         }
 
@@ -128,21 +128,21 @@ public class BattleLogic {
                 card1.creatureType().equals(CreatureType.ORK) && card2.creatureType().equals(CreatureType.WIZARD) ||
                 card1.creatureType().equals(CreatureType.DRAGON) && card2.creatureType().equals(CreatureType.ELF) && card2.elementType().equals(ElementType.FIRE)
         ) {
-            return Status.CARD2;
+            return BattleStatus.CARD2;
         } else if (
                 card2.creatureType().equals(CreatureType.GOBLIN) && card1.creatureType().equals(CreatureType.DRAGON) ||
                 card2.creatureType().equals(CreatureType.ORK) && card1.creatureType().equals(CreatureType.WIZARD) ||
                 card2.creatureType().equals(CreatureType.DRAGON) && card1.creatureType().equals(CreatureType.ELF) && card1.elementType().equals(ElementType.FIRE)
         ) {
-            return Status.CARD1;
+            return BattleStatus.CARD1;
 
         } else if (card1.getDamage() > card2.getDamage()) {
-            return Status.CARD1;
+            return BattleStatus.CARD1;
 
         } else if (card2.getDamage() > card1.getDamage()) {
-            return Status.CARD2;
+            return BattleStatus.CARD2;
         }
 
-        return Status.DRAW;
+        return BattleStatus.DRAW;
     }
 }

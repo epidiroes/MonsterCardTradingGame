@@ -1,5 +1,5 @@
 package org.example.apps.mctg.controller;
 
-public class ScoreController {
+public class ScoreboardController {
     // TODO
 }

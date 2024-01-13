@@ -1,5 +1,5 @@
 package org.example.apps.mctg.entity;
 
-public class Score {
+public class Scoreboard {
     // TODO
 }
