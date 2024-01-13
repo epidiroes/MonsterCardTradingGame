@@ -39,7 +39,6 @@ public class ScoreboardController extends Controller {
         if (optionalUser.isEmpty()) {
             return status(HttpStatus.UNAUTHORIZED);
         }
-        return ok("TODO");
-        //return ok(json(statsService.readAll()));
+        return ok(json(statsService.readAll()));
     }
 }

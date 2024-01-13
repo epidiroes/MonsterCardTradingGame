@@ -4,6 +4,7 @@ import org.example.apps.mctg.entity.Stat;
 import org.example.apps.mctg.entity.User;
 import org.example.apps.mctg.repository.StatsRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class StatsService {
@@ -16,6 +17,9 @@ public class StatsService {
         return statsRepository.find(user);
     }
 
+    public List<Stat> readAll() {
+        return statsRepository.findAll();
+    }
     public void createStats(User user) {
         statsRepository.create(user);
     }
