@@ -25,6 +25,7 @@ public class MctgApp implements ServerApplication {
         this.controllers.add(new StatsController());
         this.controllers.add(new ScoreboardController());
         this.controllers.add(new BattleController());
+        this.controllers.add(new TradingsController());
     }
 
     @Override
