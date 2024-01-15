@@ -23,35 +23,14 @@ public class DeckService {
         this.cardRepository = cardRepository;
     }
 
-    public List<Card> findAll(Request request) {
-        String authorization = request.getAuthorization();
-        if (Objects.equals(authorization, "")) {
-            return null;
-        }
-        String name = authorization.substring(authorization.indexOf(" ") + 1, authorization.indexOf("-", authorization.indexOf(" ") + 1));
-        Optional<User> userOptional = userRepository.find(name);
-        if (userOptional.isEmpty()) {
-            return null;
-        }
-        User user = userOptional.get();
-
+    public List<Card> findAll(User user) {
         return deckRepository.findAll(user);
     }
 
-    public Deck configDeck(Request request, List<String> cardId) {
+    public Deck configDeck(User user, List<String> cardId) {
         if (cardId.size() != 4) {
             return null;
         }
-        String authorization = request.getAuthorization();
-        if (Objects.equals(authorization, "")) {
-            return null;
-        }
-        String name = authorization.substring(authorization.indexOf(" ") + 1, authorization.indexOf("-", authorization.indexOf(" ") + 1));
-        Optional<User> userOptional = userRepository.find(name);
-        if (userOptional.isEmpty()) {
-            return null;
-        }
-        User user = userOptional.get();
 
         List<Card> cards = new ArrayList<>();
         for(String id : cardId) {
@@ -64,7 +43,7 @@ public class DeckService {
         }
 
         // create deck if it isn't set yet, or update if the cards differ
-        List<Card> deck = this.findAll(request);
+        List<Card> deck = this.findAll(user);
         if (deck.isEmpty()) {
             return deckRepository.create(user, cards);
         } else {

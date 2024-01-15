@@ -3,9 +3,11 @@ package org.example.apps.mctg.controller;
 import com.sun.jdi.request.DuplicateRequestException;
 import org.example.apps.mctg.entity.Card;
 import org.example.apps.mctg.entity.Deck;
+import org.example.apps.mctg.entity.User;
 import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.DeckRepository;
 import org.example.apps.mctg.repository.UserRepository;
+import org.example.apps.mctg.service.AuthorizationService;
 import org.example.apps.mctg.service.DeckService;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
@@ -14,8 +16,10 @@ import org.example.server.http.Response;
 import java.util.List;
 
 public class DeckController extends Controller {
+    private final AuthorizationService authorizationService;
     private final DeckService deckService;
     public  DeckController() {
+        this.authorizationService = new AuthorizationService(new UserRepository());
         this.deckService = new DeckService(new UserRepository(), new DeckRepository(), new CardRepository());
     }
 
@@ -46,7 +50,8 @@ public class DeckController extends Controller {
     }
 
     private Response read(Request request) {
-        List<Card> cards = deckService.findAll(request);
+        User user = authorizationService.authorizedUser(request.getAuthorization());
+        List<Card> cards = deckService.findAll(user);
         if (cards == null) {
             return ok("There are no cards in the deck");
         }
@@ -54,7 +59,8 @@ public class DeckController extends Controller {
     }
 
     private Response readPlain(Request request) {
-        List<Card> cards = deckService.findAll(request);
+        User user = authorizationService.authorizedUser(request.getAuthorization());
+        List<Card> cards = deckService.findAll(user);
         if (cards == null) {
             return ok("There are no cards in the deck");
         }
@@ -66,8 +72,9 @@ public class DeckController extends Controller {
     }
 
     private Response config(Request request) {
+        User user = authorizationService.authorizedUser(request.getAuthorization());
         List<String> cardIdList = toList(request.getBody());
-        Deck deck = deckService.configDeck(request, cardIdList);
+        Deck deck = deckService.configDeck(user, cardIdList);
         if (deck == null) {
             return status(HttpStatus.BAD_REQUEST);
         }
