@@ -2,10 +2,13 @@ package org.example.apps.mctg.controller;
 
 import org.example.apps.mctg.entity.Card;
 import org.example.apps.mctg.entity.Package;
+import org.example.apps.mctg.entity.User;
 import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.PackageRepository;
 import org.example.apps.mctg.repository.UserRepository;
+import org.example.apps.mctg.service.AuthorizationService;
 import org.example.apps.mctg.service.PackageService;
+import org.example.server.http.HttpException;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
@@ -13,9 +16,11 @@ import org.example.server.http.Response;
 import java.util.List;
 
 public class PackageController extends Controller {
+    private final AuthorizationService authorizationService;
     private final PackageService packageService;
     public PackageController() {
-        this.packageService = new PackageService(new PackageRepository(), new CardRepository(), new UserRepository());
+        this.authorizationService = new AuthorizationService(new UserRepository());
+        this.packageService = new PackageService(new PackageRepository(), new CardRepository());
     }
 
     @Override
@@ -36,11 +41,15 @@ public class PackageController extends Controller {
     }
 
     private Response create(Request request) {
+        User user = authorizationService.authorizedUser(request.getAuthorization());
+        if (!user.getUsername().equals("admin")) {
+            throw new HttpException(HttpStatus.UNAUTHORIZED, "Non admin trying to create package");
+        }
         List<Card> cards = toObjects(request, Card.class);
-        Package p = packageService.save(request, cards);
-        if (p == null) {
+        Package pack = packageService.save(user, cards);
+        if (pack == null) {
             return statusMessage(HttpStatus.BAD_REQUEST, "Could not create package (no authorization or cards already exist");
         }
-        return ok(json(p));
+        return ok(json(pack));
     }
 }

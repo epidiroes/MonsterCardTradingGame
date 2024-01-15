@@ -15,24 +15,12 @@ import java.util.Optional;
 public class PackageService {
     private final PackageRepository packageRepository;
     private final CardRepository cardRepository;
-    private final UserRepository userRepository;
-    public PackageService(PackageRepository packageRepository, CardRepository cardRepository, UserRepository userRepository) {
+    public PackageService(PackageRepository packageRepository, CardRepository cardRepository) {
         this.packageRepository = packageRepository;
         this.cardRepository = cardRepository;
-        this.userRepository = userRepository;
     }
 
-    public Package save(Request request, List<Card> cards) {
-        // check authorization
-        if (!Objects.equals(request.getAuthorization(), "Bearer admin-mtcgToken")) {
-            return null;
-        }
-        Optional<User> user = userRepository.find("admin");
-        if (user.isEmpty()) {
-            return null;
-        }
-        User admin = user.get();
-
+    public Package save(User admin, List<Card> cards) {
         // save cards
         if(!saveAll(cards, admin)) {
             return null;
