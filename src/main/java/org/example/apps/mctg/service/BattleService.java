@@ -25,21 +25,7 @@ public class BattleService {
         this.battleLogic = battleLogic;
         this.statsRepository = statsRepository;
     }
-    public synchronized String battle(Request request) {
-        // Authentication
-        String authorization = request.getAuthorization();
-        if (Objects.equals(authorization, "")) {
-            System.err.print("no authorization");
-            return null;
-        }
-        String name = authorization.substring(authorization.indexOf(" ") + 1, authorization.indexOf("-", authorization.indexOf(" ") + 1));
-        Optional<User> userOptional = userRepository.find(name);
-        if (userOptional.isEmpty()) {
-            System.err.print("user not found");
-            return null;
-        }
-        User user = userOptional.get();
-
+    public synchronized String battle(User user) {
         // Find open battle or open new battle
         Optional<Battle> openBattle = battleRepository.findOpenBattle();
         if (openBattle.isEmpty()) {
