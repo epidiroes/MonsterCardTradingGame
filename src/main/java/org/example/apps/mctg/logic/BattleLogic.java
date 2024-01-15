@@ -8,6 +8,7 @@ import org.example.apps.mctg.enums.ElementType;
 import org.example.apps.mctg.enums.BattleStatus;
 import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.DeckRepository;
+import org.example.apps.mctg.repository.UserRepository;
 
 import java.util.List;
 import java.util.Random;
@@ -16,9 +17,11 @@ public class BattleLogic {
     private int maxRounds = 100;
     private final DeckRepository deckRepository;
     private final CardRepository cardRepository;
-    public BattleLogic(DeckRepository deckRepository, CardRepository cardRepository) {
+    private final UserRepository userRepository;
+    public BattleLogic(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository) {
         this.deckRepository = deckRepository;
         this.cardRepository = cardRepository;
+        this.userRepository = userRepository;
     }
     public Battle battle(Battle battle, User user1, User user2) {
         battle.setPlayer1(user1.getId());
@@ -72,9 +75,11 @@ public class BattleLogic {
 
                 if (deck1.isEmpty()) {
                     battle.setWinner(user2.getId());
+                    userRepository.addCoin(user2);
                     round = maxRounds;
                 } else if (deck2.isEmpty()) {
                     battle.setWinner(user1.getId());
+                    userRepository.addCoin(user1);
                     round = maxRounds;
                 }
             } else {

@@ -3,6 +3,8 @@ package org.example.apps.mctg.repository;
 import org.example.apps.mctg.database.Database;
 import org.example.apps.mctg.dto.Bio;
 import org.example.apps.mctg.entity.User;
+import org.example.server.http.HttpException;
+import org.example.server.http.HttpStatus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -157,7 +159,20 @@ public class UserRepository {
             stmt.setString(1, user.getId());
             stmt.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "could not remove coins");
+        }
+    }
+
+    public void addCoin(User user) {
+        String UPDATE_COIN_ADD_SQL = "UPDATE users SET coins = coins + 1 WHERE id = ?";
+        try (
+                Connection con = database.getConnection();
+                PreparedStatement stmt = con.prepareStatement(UPDATE_COIN_ADD_SQL);
+        ) {
+            stmt.setString(1, user.getId());
+            stmt.execute();
+        } catch (SQLException e) {
+            throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "could not add coin");
         }
     }
 }

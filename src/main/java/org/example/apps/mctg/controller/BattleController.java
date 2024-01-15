@@ -14,8 +14,14 @@ public class BattleController extends Controller {
     private final BattleService battleService;
     public BattleController() {
         this.authorizationService = new AuthorizationService(new UserRepository());
-        this.battleService = new BattleService(new UserRepository(), new BattleRepository(), new BattleLogic(new DeckRepository(), new CardRepository()), new StatsRepository());
+        this.battleService = new BattleService(
+                new UserRepository(),
+                new BattleRepository(),
+                new BattleLogic(new DeckRepository(), new CardRepository(), new UserRepository()),
+                new StatsRepository()
+        );
     }
+
     @Override
     public boolean supports(String route) {
         return route.startsWith("/battles");
