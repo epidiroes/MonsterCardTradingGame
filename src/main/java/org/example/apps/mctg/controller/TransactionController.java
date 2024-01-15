@@ -1,17 +1,21 @@
 package org.example.apps.mctg.controller;
 
 import org.example.apps.mctg.entity.Package;
+import org.example.apps.mctg.entity.User;
 import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.PackageRepository;
 import org.example.apps.mctg.repository.UserRepository;
+import org.example.apps.mctg.service.AuthorizationService;
 import org.example.apps.mctg.service.TransactionService;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
 
 public class TransactionController extends Controller {
+    private final AuthorizationService authorizationService;
     private final TransactionService transactionService;
     public TransactionController() {
+        this.authorizationService = new AuthorizationService(new UserRepository());
         this.transactionService = new TransactionService(new PackageRepository(), new UserRepository(), new CardRepository());
     }
 
@@ -32,7 +36,8 @@ public class TransactionController extends Controller {
     }
 
     private Response acquire(Request request) {
-        Package pack = transactionService.buy(request);
+        User user = authorizationService.authorizedUser(request.getAuthorization());
+        Package pack = transactionService.buy(user);
         if (pack == null) {
             return statusMessage(HttpStatus.BAD_REQUEST, "Transaction failed (no money or no available packages)");
         }

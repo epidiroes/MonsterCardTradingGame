@@ -21,16 +21,7 @@ public class TransactionService {
         this.cardRepository = cardRepository;
     }
 
-    public Package buy(Request request) {
-        // find user by name in the authorization header
-        String authorization = request.getAuthorization();
-        String name = authorization.substring(authorization.indexOf(" ") + 1, authorization.indexOf("-", authorization.indexOf(" ") + 1));
-        Optional<User> userOptional = userRepository.find(name);
-        if (userOptional.isEmpty()) {
-            return null;
-        }
-        User user = userOptional.get();
-
+    public Package buy(User user) {
         // check if the user has enough coins to buy a package
         if (user.getCoins() < 5) {
             return null;
