@@ -27,18 +27,7 @@ public class CardService {
         }
         return optionalCard.get();
     }
-    public List<Card> findAll(Request request) {
-        String authorization = request.getAuthorization();
-        if (Objects.equals(authorization, "")) {
-            return null;
-        }
-        String name = authorization.substring(authorization.indexOf(" ") + 1, authorization.indexOf("-", authorization.indexOf(" ") + 1));
-        Optional<User> userOptional = userRepository.find(name);
-        if (userOptional.isEmpty()) {
-            return null;
-        }
-        User user = userOptional.get();
-
+    public List<Card> findAll(User user) {
         return cardRepository.findAll(user);
     }
 
