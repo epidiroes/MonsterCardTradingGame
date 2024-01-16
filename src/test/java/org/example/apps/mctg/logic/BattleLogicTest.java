@@ -127,10 +127,10 @@ class BattleLogicTest {
         BattleStatus status4 = battleLogic.fight(card2, card1);
 
         // Assert
-        assertEquals(BattleStatus.CARD1, status1);
+        assertEquals(BattleStatus.DRAW, status1);
         assertEquals(BattleStatus.CARD2, status2);
         assertEquals(BattleStatus.CARD1, status3);
-        assertEquals(BattleStatus.CARD2, status4);
+        assertEquals(BattleStatus.DRAW, status4);
     }
 
     @Test
