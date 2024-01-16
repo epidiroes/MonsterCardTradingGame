@@ -103,7 +103,7 @@ public class BattleLogic {
         return battle;
     }
 
-    private BattleStatus fight(Card card1, Card card2) {
+    public BattleStatus fight(Card card1, Card card2) {
 
         if (card1.isSpell() || card2.isSpell()) {
 
