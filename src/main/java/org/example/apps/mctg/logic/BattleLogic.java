@@ -105,14 +105,14 @@ public class BattleLogic {
 
     public BattleStatus fight(Card card1, Card card2) {
 
-        if (card1.creatureType().equals(CreatureType.KRAKEN)) {
-            return BattleStatus.CARD1;
-
-        } else if (card2.creatureType().equals(CreatureType.KRAKEN)) {
-            return BattleStatus.CARD2;
-        }
-
         if (card1.isSpell() || card2.isSpell()) {
+
+            if (card1.creatureType().equals(CreatureType.KRAKEN)) {
+                return BattleStatus.CARD1;
+
+            } else if (card2.creatureType().equals(CreatureType.KRAKEN)) {
+                return BattleStatus.CARD2;
+            }
 
             if (card1.hasElementType() && card2.hasElementType()) {
                 if (card1.getDamage() * card1.getDamageMultiplier(card2) > card2.getDamage() * card2.getDamageMultiplier(card1)) {

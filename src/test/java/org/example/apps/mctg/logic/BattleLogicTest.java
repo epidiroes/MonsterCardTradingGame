@@ -55,12 +55,12 @@ class BattleLogicTest {
     }
 
     @Test
-    public void whenFightWithKraken_krakenAlwaysWins() {
+    public void whenFightWithKraken_krakenWinsAgainstSpell() {
         // Arrange
         BattleLogic battleLogic = new BattleLogic(new DeckRepository(), new CardRepository(), new UserRepository());
         Card card1 = new Card("1", "1", "Kraken", 1);
         Card card2 = new Card("1", "1", "Knight", 100);
-        Card card3 = new Card("1", "1", "Dragon", 100);
+        Card card3 = new Card("1", "1", "FireSpell", 100);
 
         // Act
         BattleStatus status1 = battleLogic.fight(card1, card2);
@@ -69,8 +69,8 @@ class BattleLogicTest {
         BattleStatus status4 = battleLogic.fight(card3, card1);
 
         // Assert
-        assertEquals(BattleStatus.CARD1, status1);
-        assertEquals(BattleStatus.CARD2, status2);
+        assertEquals(BattleStatus.CARD2, status1);
+        assertEquals(BattleStatus.CARD1, status2);
         assertEquals(BattleStatus.CARD1, status3);
         assertEquals(BattleStatus.CARD2, status4);
     }
