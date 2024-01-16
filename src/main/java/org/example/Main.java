@@ -1,8 +1,6 @@
 package org.example;
 
-import org.example.apps.display.DisplayApp;
 import org.example.apps.mctg.MctgApp;
-import org.example.apps.task.TaskApp;
 import org.example.server.Server;
 
 public class Main {
