@@ -16,7 +16,6 @@ public class StatsService {
     public Stat read(User user) {
         return statsRepository.find(user);
     }
-
     public List<Stat> readAll() {
         return statsRepository.findAll();
     }

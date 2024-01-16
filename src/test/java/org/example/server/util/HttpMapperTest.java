@@ -34,6 +34,18 @@ class HttpMapperTest {
     }
 
     @Test
+    public void shouldSaveHoseInRequestObject_whenCallingToRequestObject() {
+        // ARRANGE
+        // httpRequests defined above
+
+        // ACT
+        Request request = HttpMapper.toRequestObject(httpRequest1);
+
+        // ASSERT
+        assertEquals("localhost:10001", request.getHost());
+    }
+
+    @Test
     public void shouldSaveRouteInRequestObject_whenCallingToRequestObject() {
         // ARRANGE
         // httpRequests defined above
