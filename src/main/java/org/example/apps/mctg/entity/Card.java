@@ -31,10 +31,6 @@ public class Card {
         return type.equals(ElementType.WATER) || type.equals(ElementType.FIRE) || type.equals(ElementType.REGULAR);
     }
 
-    public boolean hasCreatureType() {
-        return !this.creatureType().equals(CreatureType.NO_CREATURE);
-    }
-
     public ElementType elementType() {
         String name = this.getName();
         if (name.startsWith("Water")) {
