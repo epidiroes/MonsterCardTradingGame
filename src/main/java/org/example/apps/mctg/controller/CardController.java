@@ -17,7 +17,7 @@ public class CardController extends Controller{
     private final CardService cardService;
     public CardController() {
         this.authorizationService = new AuthorizationService(new UserRepository());
-        this.cardService = new CardService(new CardRepository(), new UserRepository());
+        this.cardService = new CardService(new CardRepository());
     }
 
     @Override
@@ -39,9 +39,6 @@ public class CardController extends Controller{
     private Response readAll(Request request) {
         User user = authorizationService.authorizedUser(request.getAuthorization());
         List<Card> cards = cardService.findAll(user);
-        if (cards == null) {
-            return status(HttpStatus.UNAUTHORIZED);
-        }
         return ok(json(cards));
     }
 }

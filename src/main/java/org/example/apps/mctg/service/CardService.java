@@ -14,10 +14,8 @@ import java.util.Optional;
 
 public class CardService {
     private final CardRepository cardRepository;
-    private final UserRepository userRepository;
-    public CardService(CardRepository cardRepository, UserRepository userRepository) {
+    public CardService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
-        this.userRepository = userRepository;
     }
 
     public Card findById(String id) {

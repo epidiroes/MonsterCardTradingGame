@@ -21,7 +21,7 @@ public class TradingsController extends Controller {
     public TradingsController() {
         this.authorizationService = new AuthorizationService(new UserRepository());
         this.tradingsService = new TradingsService(new TradingsRepository());
-        this.cardService = new CardService(new CardRepository(), new UserRepository());
+        this.cardService = new CardService(new CardRepository());
     }
 
     @Override

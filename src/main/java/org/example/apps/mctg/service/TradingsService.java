@@ -6,7 +6,7 @@ import org.example.apps.mctg.repository.TradingsRepository;
 import java.util.List;
 
 public class TradingsService {
-    private TradingsRepository tradingsRepository;
+    private final TradingsRepository tradingsRepository;
     public TradingsService(TradingsRepository tradingsRepository) {
         this.tradingsRepository = tradingsRepository;
     }
