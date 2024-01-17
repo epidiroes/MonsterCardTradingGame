@@ -35,12 +35,7 @@ public class SessionController extends Controller {
     private Response getToken(Request request) {
         TokenRequest tokenRequest = toObject(request, TokenRequest.class);
         Token token = sessionService.getToken(tokenRequest);
-
-        if (token == null) {
-            return statusMessage(HttpStatus.BAD_REQUEST, "Username or password false");
-        } else {
-            return ok(token.getToken());
-        }
+        return ok(json(token.getToken()));
     }
 
 

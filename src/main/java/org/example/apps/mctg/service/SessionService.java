@@ -4,6 +4,8 @@ import org.example.apps.mctg.dto.Token;
 import org.example.apps.mctg.dto.TokenRequest;
 import org.example.apps.mctg.entity.User;
 import org.example.apps.mctg.repository.UserRepository;
+import org.example.server.http.HttpException;
+import org.example.server.http.HttpStatus;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -18,11 +20,11 @@ public class SessionService {
     public Token getToken (TokenRequest tokenRequest) {
         Optional<User> userOptional = findByUsername(tokenRequest.getUsername());
         if (userOptional.isEmpty()) {
-            return null;
+            throw new HttpException(HttpStatus.BAD_REQUEST, "User with this username doesn't exit");
         } else {
             User user = userOptional.get();
             if(!checkPassword(user, tokenRequest.getPassword())) {
-                return null;
+                throw new HttpException(HttpStatus.BAD_REQUEST, "Wrong password");
             }
             return generateToken();
         }
