@@ -22,12 +22,10 @@ public class PackageController extends Controller {
         this.authorizationService = new AuthorizationService(new UserRepository());
         this.packageService = new PackageService(new PackageRepository(), new CardRepository());
     }
-
     @Override
     public boolean supports(String route) {
         return route.startsWith("/packages");
     }
-
     @Override
     public Response handle(Request request) {
 
@@ -48,7 +46,7 @@ public class PackageController extends Controller {
         List<Card> cards = toObjects(request, Card.class);
         Package pack = packageService.save(user, cards);
         if (pack == null) {
-            return statusMessage(HttpStatus.BAD_REQUEST, "Could not create package (no authorization or cards already exist");
+            throw new HttpException(HttpStatus.BAD_REQUEST, "Could not create package because cards already exist");
         }
         return ok(json(pack));
     }
