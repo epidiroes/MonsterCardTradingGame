@@ -78,7 +78,7 @@ public class TradingsController extends Controller {
         }
         cardService.updateUser(card, user);
         tradingsService.delete(id);
-        return ok("Trade successful");
+        return ok(json("Trade successful"));
     }
 
     private Response delete(Request request) {

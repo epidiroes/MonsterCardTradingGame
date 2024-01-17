@@ -28,15 +28,6 @@ public abstract class Controller {
         return response;
     }
 
-    protected Response statusMessage(HttpStatus httpStatus, String body) {
-        Response response = new Response();
-        response.setStatus(httpStatus);
-        response.setContentType(HttpContentType.APPLICATION_JSON);
-        response.setBody("{ \"error\": \""+ httpStatus.getMessage() + "\", \"message\": \"" + body + "\"}");
-
-        return response;
-    }
-
     protected Response created(String body) {
         Response response = new Response();
         response.setStatus(HttpStatus.CREATED);
