@@ -17,6 +17,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public User save(User user) {
+        Optional<User> findUser = userRepository.find(user.getUsername());
+        if (findUser.isPresent()) {
+            return null;
+        }
+        user.setId(UUID.randomUUID().toString());
+        user.setCoins(20);
+        return userRepository.save(user);
+    }
+
     public User find(Request request) {
         if (!isAuthorized(request)) {
             return null;
@@ -32,23 +46,7 @@ public class UserService {
         }
         String nameRoute = request.getRoute().substring(request.getRoute().lastIndexOf('/') + 1);
         Optional<User> userOptional = userRepository.find(nameRoute);
-        if (userOptional.isEmpty()) {
-            return null;
-        }
-        return userRepository.edit(userOptional.get(), bio);
-    }
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public User save(User user) {
-        Optional<User> findUser = userRepository.find(user.getUsername());
-        if (findUser.isPresent()) {
-            return null;
-        }
-        user.setId(UUID.randomUUID().toString());
-        user.setCoins(20);
-        return userRepository.save(user);
+        return userOptional.map(user -> userRepository.edit(user, bio)).orElse(null);
     }
 
     private boolean isAuthorized(Request request) {

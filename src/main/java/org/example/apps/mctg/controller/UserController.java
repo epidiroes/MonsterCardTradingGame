@@ -6,6 +6,7 @@ import org.example.apps.mctg.repository.UserRepository;
 import org.example.apps.mctg.service.StatsService;
 import org.example.apps.mctg.service.UserService;
 import org.example.apps.mctg.entity.User;
+import org.example.server.http.HttpException;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
@@ -30,7 +31,7 @@ public class UserController extends Controller {
 
         if (request.getRoute().equals("/users")) {
             return switch (request.getMethod()) {
-                case "GET" -> readAll(request);
+                case "GET" -> readAll();
                 case "POST" -> create(request);
                 default -> status(HttpStatus.METHOD_NOT_ALLOWED);
             };
@@ -44,7 +45,7 @@ public class UserController extends Controller {
         }
     }
 
-    public Response readAll(Request request) {
+    public Response readAll() {
         List<User> users = userService.findAll();
         return ok(json(users));
     }
@@ -53,7 +54,7 @@ public class UserController extends Controller {
         User user = toObject(request, User.class);
         user = userService.save(user);
         if (user == null) {
-            return statusMessage(HttpStatus.BAD_REQUEST, "User already exists");
+            throw new HttpException(HttpStatus.BAD_REQUEST, "User already exists");
         }
         statsService.createStats(user);
         return created(json(user));
@@ -62,7 +63,7 @@ public class UserController extends Controller {
     public Response read(Request request) {
         User user = userService.find(request);
         if (user == null) {
-            return status(HttpStatus.UNAUTHORIZED);
+            throw new HttpException(HttpStatus.UNAUTHORIZED, "Unauthorized to read user profile");
         }
         return ok(json(user));
     }
@@ -71,7 +72,7 @@ public class UserController extends Controller {
         Bio bio = toObject(request, Bio.class);
         User user = userService.edit(request, bio);
         if (user == null) {
-            return status(HttpStatus.UNAUTHORIZED);
+            throw new HttpException(HttpStatus.UNAUTHORIZED, "Unauthorized to edit user profile");
         }
         return ok(json(user));
     }

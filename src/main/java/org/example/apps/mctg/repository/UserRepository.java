@@ -26,8 +26,9 @@ public class UserRepository {
         ) {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
+
             User user = null;
-            while (rs.next()) {
+            if (rs.next()) {
                 user = new User(
                         rs.getString("id"),
                         rs.getString("username"),
@@ -80,7 +81,6 @@ public class UserRepository {
 
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-
         String FIND_ALL_SQL = "SELECT * FROM users";
         try (
                 Connection con = database.getConnection();
@@ -94,13 +94,11 @@ public class UserRepository {
                         rs.getString("password"),
                         rs.getInt("coins")
                 );
-
                 users.add(user);
             }
-
             return users;
         } catch (SQLException e) {
-            return users;
+            throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "error while looking for all users");
         }
     }
 
@@ -117,7 +115,7 @@ public class UserRepository {
 
             stmt.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "error while creating user");
         }
 
         return user;
@@ -136,7 +134,7 @@ public class UserRepository {
 
             stmt.execute();
         } catch (SQLException e) {
-            return null;
+            throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "error while editing user profile");
         }
 
         return new User(
