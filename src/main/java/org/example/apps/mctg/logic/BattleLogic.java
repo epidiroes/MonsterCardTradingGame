@@ -44,7 +44,7 @@ public class BattleLogic {
         log.append("\nThe battle between ").append(name1).append(" and ");
         log.append(name2).append(" begins ...\n");
 
-        for (int round = 0; round < maxRounds; round++) {
+        for (int round = 1; round <= maxRounds; round++) {
             log.append("Round ").append(round).append(": ");
             Card card1 = deck1.get(rand.nextInt(deck1.size()));
             Card card2 = deck2.get(rand.nextInt(deck2.size()));
@@ -76,11 +76,11 @@ public class BattleLogic {
                 if (deck1.isEmpty()) {
                     battle.setWinner(user2.getId());
                     userRepository.addCoin(user2);
-                    round = maxRounds;
+                    round = maxRounds + 1;
                 } else if (deck2.isEmpty()) {
                     battle.setWinner(user1.getId());
                     userRepository.addCoin(user1);
-                    round = maxRounds;
+                    round = maxRounds + 1;
                 }
             } else {
                 log.append(" -> Draw! No card won.\n");
