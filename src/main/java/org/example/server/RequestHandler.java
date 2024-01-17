@@ -50,7 +50,11 @@ public class RequestHandler implements Runnable {
         } catch (HttpException e) {
             response.setStatus(e.getStatus());
             response.setContentType(HttpContentType.APPLICATION_JSON);
-            response.setBody(e.getMessage());
+            response.setBody(
+                    "{ \"code\": \"" + e.getStatus().getCode() +
+                    "\", \"error\": \"" + e.getStatus().getMessage() +
+                    "\", \"message\": \"" + e.getMessage() + "\"}"
+            );
         }
 
         out = new PrintWriter(client.getOutputStream(), true);
