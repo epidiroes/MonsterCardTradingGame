@@ -6,6 +6,8 @@ import org.example.apps.mctg.entity.User;
 import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.DeckRepository;
 import org.example.apps.mctg.repository.UserRepository;
+import org.example.server.http.HttpException;
+import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 
 import java.util.ArrayList;
@@ -29,14 +31,14 @@ public class DeckService {
 
     public Deck configDeck(User user, List<String> cardId) {
         if (cardId.size() != 4) {
-            return null;
+            throw new HttpException(HttpStatus.BAD_REQUEST, "Deck size must be 4");
         }
 
         List<Card> cards = new ArrayList<>();
         for(String id : cardId) {
             Optional<Card> cardOptional = cardRepository.findById(id);
             if (cardOptional.isEmpty()) {
-                return null;
+                throw new HttpException(HttpStatus.BAD_REQUEST, "CardId not found");
             }
             Card card = cardOptional.get();
             cards.add(card);

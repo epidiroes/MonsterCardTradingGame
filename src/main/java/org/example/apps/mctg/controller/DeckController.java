@@ -9,6 +9,7 @@ import org.example.apps.mctg.repository.DeckRepository;
 import org.example.apps.mctg.repository.UserRepository;
 import org.example.apps.mctg.service.AuthorizationService;
 import org.example.apps.mctg.service.DeckService;
+import org.example.server.http.HttpException;
 import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 import org.example.server.http.Response;
@@ -76,7 +77,7 @@ public class DeckController extends Controller {
         List<String> cardIdList = toList(request.getBody());
         Deck deck = deckService.configDeck(user, cardIdList);
         if (deck == null) {
-            return status(HttpStatus.BAD_REQUEST);
+            throw new HttpException(HttpStatus.BAD_REQUEST, "This deck already exists");
         }
         return created(json(deck));
     }
