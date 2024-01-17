@@ -38,9 +38,6 @@ public class TransactionController extends Controller {
     private Response acquire(Request request) {
         User user = authorizationService.authorizedUser(request.getAuthorization());
         Package pack = transactionService.buy(user);
-        if (pack == null) {
-            return statusMessage(HttpStatus.BAD_REQUEST, "Transaction failed (no money or no available packages)");
-        }
         return ok(json(pack));
     }
 }

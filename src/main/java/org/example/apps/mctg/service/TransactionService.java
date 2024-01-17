@@ -5,6 +5,8 @@ import org.example.apps.mctg.entity.Package;
 import org.example.apps.mctg.repository.CardRepository;
 import org.example.apps.mctg.repository.PackageRepository;
 import org.example.apps.mctg.repository.UserRepository;
+import org.example.server.http.HttpException;
+import org.example.server.http.HttpStatus;
 import org.example.server.http.Request;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class TransactionService {
     public Package buy(User user) {
         // check if the user has enough coins to buy a package
         if (user.getCoins() < 5) {
-            return null;
+            throw new HttpException(HttpStatus.BAD_REQUEST, "User doesn't have enough coins to buy package");
         }
 
         // find admin user
@@ -36,12 +38,9 @@ public class TransactionService {
 
         List<Package> packages = packageRepository.findAll(admin);
         if (packages.isEmpty()) {
-            return null;
+            throw new HttpException(HttpStatus.BAD_REQUEST, "No available packages");
         }
         Package pack = packageRepository.transaction(user, packages.get(0));
-        if (pack == null) {
-            return null;
-        }
         cardRepository.updateUserIdPackage(pack, user);
         userRepository.removeCoins(user);
 

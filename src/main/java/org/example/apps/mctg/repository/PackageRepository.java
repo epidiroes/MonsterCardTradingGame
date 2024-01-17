@@ -4,6 +4,8 @@ import org.example.apps.mctg.database.Database;
 import org.example.apps.mctg.entity.Card;
 import org.example.apps.mctg.entity.Package;
 import org.example.apps.mctg.entity.User;
+import org.example.server.http.HttpException;
+import org.example.server.http.HttpStatus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -85,7 +87,7 @@ public class PackageRepository {
             stmt.setString(2, pack.getId());
             stmt.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while updating package");
         }
         pack.setUser_id(user.getId());
         return pack;
